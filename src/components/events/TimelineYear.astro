@@ -1,0 +1,34 @@
+---
+interface Props {
+  year: number;
+}
+
+const { year } = Astro.props;
+---
+
+<div class="timeline-year">
+  <span class="timeline-year__badge">{year}</span>
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+
+  .timeline-year {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .timeline-year__badge {
+    display: inline-block;
+    background-color: $color-primary;
+    color: $color-primary-fg;
+    padding: 0.75rem 2rem;
+    border-radius: $radius-full;
+    font-size: 1.125rem;
+    font-weight: 700;
+    box-shadow: $shadow-glow;
+  }
+</style>

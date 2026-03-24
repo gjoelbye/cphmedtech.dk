@@ -1,0 +1,59 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonicalPath?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og/og-default.jpg',
+  canonicalPath,
+  type = 'website',
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://cphmedtech.dk');
+const canonicalUrl = new URL(canonicalPath ?? Astro.url.pathname, siteUrl);
+const ogImageUrl = new URL(ogImage, siteUrl);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title} | Copenhagen MedTech</title>
+<meta name="description" content={description} />
+<meta name="author" content="Copenhagen MedTech" />
+<meta name="keywords" content="MedTech, Copenhagen, medical technology, innovation summit, student organization, healthcare innovation" />
+
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="Copenhagen MedTech" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<!-- Favicons -->
+<link rel="icon" href="/favicon.ico" />
+<link rel="icon" type="image/jpeg" href="/favicon.jpg" />
+
+<!-- Font preloads -->
+<link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/inter-700.woff2" as="font" type="font/woff2" crossorigin />
+
+<!-- JSON-LD slot -->
+<slot />

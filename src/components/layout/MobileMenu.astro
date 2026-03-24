@@ -1,0 +1,144 @@
+---
+import Icon from '../shared/Icon.astro';
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Past Events', href: '/past-events/' },
+  { label: '2025', href: '/2025/' },
+  { label: 'Partners', href: '/partners/' },
+  { label: 'Contact', href: '/contact/' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true" data-mobile-menu>
+  <div class="mobile-menu__backdrop" data-menu-close></div>
+  <nav class="mobile-menu__panel" aria-label="Mobile navigation">
+    <div class="mobile-menu__header">
+      <button
+        class="mobile-menu__close"
+        aria-label="Close navigation menu"
+        data-menu-close
+      >
+        <Icon name="x" size={24} />
+      </button>
+    </div>
+    <ul class="mobile-menu__links">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={['mobile-menu__link', { 'mobile-menu__link--active': isActive(link.href) }]}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    visibility: hidden;
+    pointer-events: none;
+    transition: visibility 0.3s;
+
+    &.is-open {
+      visibility: visible;
+      pointer-events: auto;
+
+      .mobile-menu__backdrop {
+        opacity: 1;
+      }
+
+      .mobile-menu__panel {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  .mobile-menu__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-menu__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 80vw;
+    background-color: $color-bg;
+    box-shadow: $shadow-strong;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .mobile-menu__header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .mobile-menu__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: $color-fg;
+    cursor: pointer;
+    border-radius: $radius;
+
+    &:hover {
+      background-color: $color-muted;
+    }
+  }
+
+  .mobile-menu__links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-menu__link {
+    display: block;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $color-fg;
+    border-radius: $radius;
+    transition: $transition-smooth;
+
+    &:hover {
+      background-color: $color-muted;
+      color: $color-primary;
+    }
+
+    &--active {
+      color: $color-primary;
+      background-color: rgba($color-primary, 0.05);
+    }
+  }
+</style>

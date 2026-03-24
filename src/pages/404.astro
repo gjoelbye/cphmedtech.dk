@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/shared/Button.astro';
+---
+
+<BaseLayout
+  title="Page Not Found"
+  description="The page you're looking for doesn't exist."
+>
+  <section class="not-found">
+    <h1 class="not-found__code">404</h1>
+    <p class="not-found__message">Oops! Page not found.</p>
+    <p class="not-found__description">The page you're looking for doesn't exist or has been moved.</p>
+    <Button href="/" variant="primary" premium>
+      Return Home
+    </Button>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .not-found__code {
+    font-size: 6rem;
+    font-weight: 700;
+    color: $color-primary;
+    line-height: 1;
+  }
+
+  .not-found__message {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $color-fg;
+    margin-top: 1rem;
+  }
+
+  .not-found__description {
+    color: $color-muted-fg;
+    margin: 0.5rem 0 2rem;
+  }
+</style>

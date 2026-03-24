@@ -1,0 +1,68 @@
+---
+import BaseHead from '../components/layout/BaseHead.astro';
+import Header from '../components/layout/Header.astro';
+import MobileMenu from '../components/layout/MobileMenu.astro';
+import Footer from '../components/layout/Footer.astro';
+import '../styles/global.scss';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonicalPath?: string;
+  type?: 'website' | 'article';
+}
+
+const { title, description, ogImage, canonicalPath, type } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      canonicalPath={canonicalPath}
+      type={type}
+    >
+      <slot name="head" />
+    </BaseHead>
+  </head>
+  <body>
+    <a href="#main" class="sr-only skip-link">Skip to content</a>
+    <Header />
+    <MobileMenu />
+    <main id="main" class="main">
+      <slot />
+    </main>
+    <Footer />
+    <script src="../scripts/mobile-menu.ts"></script>
+  </body>
+</html>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+
+  .main {
+    flex: 1;
+    padding-top: $nav-height;
+  }
+
+  .skip-link {
+    &:focus {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      z-index: 200;
+      padding: 0.5rem 1rem;
+      background: $color-primary;
+      color: $color-primary-fg;
+      border-radius: $radius;
+      width: auto;
+      height: auto;
+      clip: auto;
+      white-space: normal;
+    }
+  }
+</style>

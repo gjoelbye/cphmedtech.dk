@@ -1,0 +1,48 @@
+---
+interface Props {
+  name: string;
+  title: string;
+  organization: string;
+}
+
+const { name, title, organization } = Astro.props;
+---
+
+<div class="speaker-card">
+  <h3 class="speaker-card__name">{name}</h3>
+  <p class="speaker-card__title">{title}</p>
+  <p class="speaker-card__org">{organization}</p>
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+
+  .speaker-card {
+    background-color: $color-card;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    padding: 1.5rem;
+    transition: $transition-smooth;
+
+    &:hover {
+      box-shadow: $shadow-medium;
+    }
+  }
+
+  .speaker-card__name {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .speaker-card__title {
+    font-size: 0.875rem;
+    color: $color-primary;
+    font-weight: 500;
+  }
+
+  .speaker-card__org {
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+    margin-top: 0.25rem;
+  }
+</style>

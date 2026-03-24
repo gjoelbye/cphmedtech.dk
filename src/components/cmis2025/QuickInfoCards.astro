@@ -1,0 +1,57 @@
+---
+import Icon from '../shared/Icon.astro';
+
+const cards = [
+  { icon: 'calendar', title: 'November 18th, 2025', subtitle: 'Save the date' },
+  { icon: 'map-pin', title: 'Panum, University of Copenhagen', subtitle: 'Blegdamsvej 3B, 2200 Copenhagen N' },
+  { icon: 'clock', title: '15:00 – 21:00', subtitle: 'Full evening program' },
+];
+---
+
+<div class="quick-info">
+  {cards.map((card) => (
+    <div class="quick-info__card">
+      <Icon name={card.icon} size={24} class="quick-info__icon" />
+      <h3 class="quick-info__title">{card.title}</h3>
+      <p class="quick-info__subtitle">{card.subtitle}</p>
+    </div>
+  ))}
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .quick-info {
+    display: grid;
+    gap: 1.5rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .quick-info__card {
+    background-color: $color-card;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .quick-info__icon {
+    color: $color-primary;
+    margin: 0 auto 0.75rem;
+  }
+
+  .quick-info__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .quick-info__subtitle {
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+  }
+</style>

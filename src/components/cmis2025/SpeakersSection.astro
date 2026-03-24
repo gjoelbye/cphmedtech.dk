@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import SpeakerCard from './SpeakerCard.astro';
+
+const allSpeakers = await getCollection('speakers');
+const speakers = allSpeakers
+  .filter((s) => s.data.event === 'cmis-2025')
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+---
+
+<section class="speakers">
+  <div class="speakers__inner">
+    <h2>Keynote Speakers</h2>
+    <p class="speakers__intro">Featured speakers include:</p>
+    <div class="speakers__grid">
+      {speakers.map((speaker) => (
+        <SpeakerCard
+          name={speaker.data.name}
+          title={speaker.data.title}
+          organization={speaker.data.organization}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .speakers {
+    padding: 4rem 0;
+  }
+
+  .speakers__inner {
+    @include container(72rem);
+
+    h2 {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .speakers__intro {
+    text-align: center;
+    color: $color-muted-fg;
+    margin-bottom: 2rem;
+  }
+
+  .speakers__grid {
+    display: grid;
+    gap: 1.5rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

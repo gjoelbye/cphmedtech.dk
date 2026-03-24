@@ -1,0 +1,133 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from '../shared/Icon.astro';
+import Button from '../shared/Button.astro';
+import Card from '../shared/Card.astro';
+
+const allEvents = await getCollection('events');
+const featured = allEvents.find((e) => e.data.isFeatured);
+
+const features = [
+  { icon: 'users', label: 'International Networking' },
+  { icon: 'mic', label: 'Inspiring Talks' },
+  { icon: 'briefcase', label: 'MedTech Startups' },
+  { icon: 'network', label: 'Career Opportunities' },
+];
+---
+
+{featured && (
+  <section class="cmis-preview">
+    <div class="cmis-preview__inner">
+      <h2 class="cmis-preview__heading">{featured.data.title}</h2>
+      <Card class="cmis-preview__card">
+        <div class="cmis-preview__info">
+          <span class="cmis-preview__detail">
+            <Icon name="calendar" size={18} />
+            {featured.data.date}
+          </span>
+          {featured.data.location && (
+            <span class="cmis-preview__detail">
+              <Icon name="map-pin" size={18} />
+              {featured.data.location}
+            </span>
+          )}
+        </div>
+        <p class="cmis-preview__description">
+          Join us at the Copenhagen MedTech Innovation Summit 2025 on 18 November.
+          This year's summit will be larger than ever, featuring international collaborations
+          with MedTech societies from the UK and US representatives from leading hospitals
+          and research institutions.
+        </p>
+        <div class="cmis-preview__features">
+          {features.map((f) => (
+            <span class="cmis-preview__feature">
+              <Icon name={f.icon} size={16} />
+              {f.label}
+            </span>
+          ))}
+        </div>
+        <div class="cmis-preview__actions">
+          <Button href="/2025/" variant="primary" premium>
+            Learn More &amp; Register
+          </Button>
+          <Button href="/contact/" variant="outline">
+            Become a Member
+          </Button>
+        </div>
+      </Card>
+    </div>
+  </section>
+)}
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .cmis-preview {
+    background-color: rgba($color-muted, 0.3);
+    padding: 6rem 0;
+  }
+
+  .cmis-preview__inner {
+    @include container(72rem);
+    text-align: center;
+  }
+
+  .cmis-preview__heading {
+    margin-bottom: 2rem;
+  }
+
+  .cmis-preview__card {
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .cmis-preview__info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cmis-preview__detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-muted-fg;
+  }
+
+  .cmis-preview__description {
+    max-width: 48rem;
+    margin: 0 auto 2rem;
+    color: $color-muted-fg;
+  }
+
+  .cmis-preview__features {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .cmis-preview__feature {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-fg;
+  }
+
+  .cmis-preview__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+</style>

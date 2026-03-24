@@ -1,0 +1,63 @@
+---
+import PartnerLogo from './PartnerLogo.astro';
+
+interface PartnerData {
+  name: string;
+  logoSrc: ImageMetadata;
+}
+
+interface Props {
+  title: string;
+  partners: PartnerData[];
+  columns?: number;
+  mobileColumns?: number;
+  logoHeight?: string;
+  maxWidth?: string;
+}
+
+const {
+  title,
+  partners,
+  columns = 2,
+  mobileColumns = 2,
+  logoHeight = '3rem',
+  maxWidth = '48rem',
+} = Astro.props;
+---
+
+<div class="partner-category" style={`max-width: ${maxWidth}; --cols: ${columns}; --mobile-cols: ${mobileColumns}`}>
+  <h3 class="partner-category__title">{title}</h3>
+  <div class="partner-category__grid">
+    {partners.map((partner) => (
+      <PartnerLogo name={partner.name} logoSrc={partner.logoSrc} height={logoHeight} />
+    ))}
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .partner-category {
+    margin: 0 auto 4rem;
+  }
+
+  .partner-category__title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    color: $color-muted-fg;
+    font-weight: 600;
+  }
+
+  .partner-category__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--mobile-cols), 1fr);
+    gap: 1.5rem;
+    align-items: center;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(var(--cols), 1fr);
+    }
+  }
+</style>

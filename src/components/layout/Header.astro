@@ -1,0 +1,164 @@
+---
+import Icon from '../shared/Icon.astro';
+import { Image } from 'astro:assets';
+import logo from '../../assets/logos/logo.jpg';
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { label: 'HOME', href: '/' },
+  { label: 'PAST EVENTS', href: '/past-events/' },
+  { label: '2025', href: '/2025/' },
+  { label: 'PARTNERS', href: '/partners/' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="header">
+  <div class="header__inner">
+    <a href="/" class="header__logo" aria-label="Copenhagen MedTech — Home">
+      <Image src={logo} alt="Copenhagen MedTech logo" width={120} height={54} loading="eager" />
+    </a>
+
+    <nav class="header__nav" aria-label="Primary navigation">
+      <ul class="header__links">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={['header__link', { 'header__link--active': isActive(link.href) }]}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="/contact/"
+            class:list={['header__link header__link--cta btn btn--primary btn--premium', { 'header__link--active': isActive('/contact/') }]}
+          >
+            CONTACT
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <button
+      class="header__hamburger"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-menu-toggle
+    >
+      <Icon name="menu" size={24} />
+    </button>
+  </div>
+</header>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background-color: rgba($color-bg, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba($color-border, 0.4);
+    box-shadow: $shadow-soft;
+  }
+
+  .header__inner {
+    @include container;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $nav-height;
+  }
+
+  .header__logo {
+    flex-shrink: 0;
+
+    img {
+      height: 3.5rem;
+      width: auto;
+    }
+  }
+
+  .header__nav {
+    display: none;
+
+    @include respond-to($bp-md) {
+      display: block;
+    }
+  }
+
+  .header__links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    @include respond-to($bp-md) {
+      gap: 0.5rem;
+    }
+  }
+
+  .header__link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-muted-fg;
+    border-radius: $radius;
+    transition: $transition-smooth;
+
+    &:hover {
+      color: $color-primary;
+      background-color: rgba($color-secondary, 0.5);
+    }
+
+    &--active {
+      color: $color-primary;
+      background-color: rgba($color-primary, 0.05);
+    }
+
+    &--cta {
+      margin-left: 0.5rem;
+      color: $color-primary-fg;
+      box-shadow: $shadow-soft;
+
+      &:hover {
+        color: $color-primary-fg;
+        box-shadow: $shadow-medium;
+      }
+    }
+  }
+
+  .header__hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: $color-fg;
+    cursor: pointer;
+    border-radius: $radius;
+    transition: $transition-smooth;
+
+    &:hover {
+      background-color: $color-muted;
+    }
+
+    @include respond-to($bp-md) {
+      display: none;
+    }
+  }
+</style>

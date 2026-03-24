@@ -1,0 +1,138 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+import Icon from '../components/shared/Icon.astro';
+import Button from '../components/shared/Button.astro';
+import PartnerCategory from '../components/partners/PartnerCategory.astro';
+
+const allPartners = await getCollection('partners');
+
+const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*', { eager: true });
+
+function getLogoSrc(filename: string): ImageMetadata | undefined {
+  const key = Object.keys(logoModules).find((k) => k.endsWith(`/${filename}`));
+  return key ? logoModules[key].default : undefined;
+}
+
+function getPartnersForCategory(category: string) {
+  return allPartners
+    .filter((p) => p.data.category === category)
+    .sort((a, b) => a.data.sortOrder - b.data.sortOrder)
+    .map((p) => ({
+      name: p.data.name,
+      logoSrc: getLogoSrc(p.data.logo)!,
+    }))
+    .filter((p) => p.logoSrc);
+}
+
+const strategic = getPartnersForCategory('strategic');
+const industry = getPartnersForCategory('industry');
+const foundation = getPartnersForCategory('foundation');
+---
+
+<PageLayout
+  title="Our Partners"
+  description="Copenhagen MedTech collaborates with industry leaders, academic institutions, and innovative companies advancing medical technology."
+>
+  <a href="/" class="back-link">
+    <Icon name="arrow-left" size={16} />
+    Back to Home
+  </a>
+
+  <div class="partners-page">
+    <h1>Our Partners</h1>
+    <p class="partners-page__description">
+      Copenhagen MedTech is proud to collaborate with industry leaders, academic institutions,
+      and innovative companies that share our vision of advancing medical technology and connecting
+      the next generation of MedTech professionals.
+    </p>
+
+    <PartnerCategory
+      title="Strategic Partners"
+      partners={strategic}
+      columns={1}
+      mobileColumns={1}
+      logoHeight="5rem"
+      maxWidth="28rem"
+    />
+
+    <PartnerCategory
+      title="Industry Collaborators"
+      partners={industry}
+      columns={5}
+      mobileColumns={2}
+      logoHeight="3rem"
+      maxWidth="72rem"
+    />
+
+    <PartnerCategory
+      title="Support Foundations"
+      partners={foundation}
+      columns={2}
+      mobileColumns={2}
+      logoHeight="4rem"
+      maxWidth="48rem"
+    />
+
+    <section class="partners-cta">
+      <h2>Become a Partner</h2>
+      <p>
+        Join our network of partners and help shape the future of MedTech education and innovation.
+        Partner with us to connect with talented students and contribute to the growing MedTech ecosystem.
+      </p>
+      <Button href="/contact/" variant="primary" premium>
+        Get in Touch
+      </Button>
+    </section>
+  </div>
+</PageLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+    margin-bottom: 2rem;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  .partners-page {
+    text-align: center;
+
+    h1 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .partners-page__description {
+    color: $color-muted-fg;
+    max-width: 40rem;
+    margin: 0 auto 4rem;
+  }
+
+  .partners-cta {
+    background-color: rgba($color-muted, 0.3);
+    border-radius: $radius-lg;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-top: 2rem;
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: $color-muted-fg;
+      max-width: 36rem;
+      margin: 0 auto 2rem;
+    }
+  }
+</style>

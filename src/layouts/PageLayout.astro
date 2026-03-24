@@ -1,0 +1,38 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonicalPath?: string;
+}
+
+const { title, description, ogImage, canonicalPath } = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  canonicalPath={canonicalPath}
+>
+  <slot name="head" slot="head" />
+  <div class="page-container">
+    <slot />
+  </div>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+  @use '../styles/mixins' as *;
+
+  .page-container {
+    @include container($container-narrow);
+    padding-block: 3rem;
+
+    @include respond-to($bp-md) {
+      padding-block: 4rem;
+    }
+  }
+</style>

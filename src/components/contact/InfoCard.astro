@@ -1,0 +1,47 @@
+---
+import Icon from '../shared/Icon.astro';
+
+interface Props {
+  icon: string;
+  title: string;
+}
+
+const { icon, title } = Astro.props;
+---
+
+<div class="info-card">
+  <div class="info-card__icon">
+    <Icon name={icon} size={24} />
+  </div>
+  <h3 class="info-card__title">{title}</h3>
+  <div class="info-card__body">
+    <slot />
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+
+  .info-card {
+    background-color: $color-card;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    padding: 1.5rem;
+  }
+
+  .info-card__icon {
+    color: $color-primary;
+    margin-bottom: 0.75rem;
+  }
+
+  .info-card__title {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card__body {
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+    line-height: 1.6;
+  }
+</style>

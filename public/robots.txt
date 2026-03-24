@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cphmedtech.dk/sitemap-index.xml

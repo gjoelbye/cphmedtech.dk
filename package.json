@@ -1,23 +1,27 @@
 {
   "name": "cphmedtech.dk",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node -e \"const fs=require('fs'),f='dist/server/wrangler.json',c=JSON.parse(fs.readFileSync(f,'utf8'));delete c.pages_build_output_dir;fs.writeFileSync(f,JSON.stringify(c));\"",
+    "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "lint:scss": "stylelint \"src/**/*.scss\"",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.1.3",
     "@astrojs/mdx": "^5.0.2",
-    "astro": "^6.0.8",
-    "citation-js": "^0.7.22"
+    "@astrojs/sitemap": "^3.7.0",
+    "astro": "^6.0.8"
   },
   "devDependencies": {
-    "sass": "^1.98.0"
+    "@fontsource/inter": "^5.2.8",
+    "sass": "^1.98.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard-scss": "^13.0.0"
   }
 }

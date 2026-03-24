@@ -1,0 +1,107 @@
+---
+import Button from '../shared/Button.astro';
+---
+
+<div class="contact-form">
+  <h2 class="contact-form__title">Send us a Message</h2>
+  <form action="mailto:info@copenhagenmedtech.org" method="post" enctype="text/plain">
+    <div class="contact-form__row">
+      <div class="contact-form__field">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required />
+      </div>
+      <div class="contact-form__field">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required />
+      </div>
+    </div>
+    <div class="contact-form__field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+    </div>
+    <div class="contact-form__field">
+      <label for="organization">Organization (Optional)</label>
+      <input type="text" id="organization" name="organization" />
+    </div>
+    <div class="contact-form__field">
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="subject" required />
+    </div>
+    <div class="contact-form__field">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="6" required placeholder="Tell us about your interest in Copenhagen MedTech..."></textarea>
+    </div>
+    <Button variant="primary" size="lg" premium class="contact-form__submit">
+      Send Message
+    </Button>
+  </form>
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .contact-form {
+    background-color: $color-card;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    padding: 2rem;
+  }
+
+  .contact-form__title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-form__row {
+    display: grid;
+    gap: 1rem;
+
+    @include respond-to($bp-sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .contact-form__field {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.375rem;
+      color: $color-fg;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      border: 1px solid $color-border;
+      border-radius: $radius;
+      background-color: $color-bg;
+      color: $color-fg;
+      font-size: 0.875rem;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+      }
+
+      &::placeholder {
+        color: $color-muted-fg;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+    }
+  }
+
+  .contact-form__submit {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+</style>

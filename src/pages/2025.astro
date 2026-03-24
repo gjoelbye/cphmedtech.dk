@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/shared/Button.astro';
+import QuickInfoCards from '../components/cmis2025/QuickInfoCards.astro';
+import ContentSection from '../components/cmis2025/ContentSection.astro';
+import SpeakersSection from '../components/cmis2025/SpeakersSection.astro';
+import ScheduleSection from '../components/cmis2025/ScheduleSection.astro';
+import crowd from '../assets/images/crowd.jpg';
+import speaker from '../assets/images/speaker.jpg';
+import speaker2 from '../assets/images/speaker2.jpg';
+import crowd2 from '../assets/images/crowd2.jpg';
+---
+
+<BaseLayout
+  title="Copenhagen MedTech Innovation Summit 2025"
+  description="Join us for the Copenhagen MedTech Innovation Summit 2025 on November 18th at Panum, University of Copenhagen. Featuring international networking, inspiring talks, and career opportunities."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Copenhagen MedTech Innovation Summit 2025",
+      "startDate": "2025-11-18T15:00:00+01:00",
+      "endDate": "2025-11-18T21:00:00+01:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "Panum, University of Copenhagen",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Blegdamsvej 3B",
+          "postalCode": "2200",
+          "addressLocality": "Copenhagen N",
+          "addressCountry": "DK"
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Copenhagen MedTech",
+        "url": "https://cphmedtech.dk"
+      }
+    })} />
+  </Fragment>
+
+  <section class="cmis-hero">
+    <div class="cmis-hero__inner">
+      <h1>Copenhagen MedTech Innovation Summit 2025</h1>
+      <p class="cmis-hero__subtitle">
+        Join us for a groundbreaking event that explores the intersection of artificial intelligence,
+        medicine, and technology.
+      </p>
+      <div class="cmis-hero__cta">
+        <Button href="https://lnkd.in/dskPYDDM" variant="primary" size="lg" premium external>
+          Sign Up Now
+        </Button>
+      </div>
+      <QuickInfoCards />
+    </div>
+  </section>
+
+  <ContentSection
+    heading="Copenhagen MedTech Innovation Summit 2025 – A Revolution Unveiled"
+    imageSrc={crowd}
+    imageAlt="Summit attendees networking"
+  >
+    <p>
+      Copenhagen MedTech is proud to invite you to our annual Innovation Summit,
+      featuring MedTech Careers – an opportunity for students to connect with the MedTech industry.
+    </p>
+    <p>
+      The evening will include inspiring talks, networking opportunities, dinner, and refreshments.
+    </p>
+  </ContentSection>
+
+  <ContentSection
+    heading="Outstanding Lineup of Industry Experts"
+    imageSrc={speaker}
+    imageAlt="Speaker presenting at the summit"
+    reversed
+  >
+    <p>
+      Our program features an outstanding lineup of industry experts ready to share their insights and experiences.
+    </p>
+    <p>
+      Participants will have the chance to meet both leading professionals and startups shaping the future of MedTech.
+    </p>
+  </ContentSection>
+
+  <ContentSection
+    heading="MedTech Careers"
+    subtitle="In Collaboration with Medicoindustrien"
+    imageSrc={speaker2}
+    imageAlt="MedTech Careers session"
+  >
+    <p>
+      In collaboration with Medicoindustrien and their partners, we are introducing a dedicated Career Day
+      as part of the event: MedTech Careers.
+    </p>
+    <p>
+      This segment gives students valuable opportunities to engage directly with industry representatives
+      and explore future career paths.
+    </p>
+  </ContentSection>
+
+  <ContentSection
+    heading="Connect, Learn, and Elevate"
+    imageSrc={crowd2}
+    imageAlt="Attendees connecting at the event"
+    reversed
+  >
+    <p>
+      At the Copenhagen MedTech Innovation Summit and MedTech Careers, our mission is to create meaningful connections.
+    </p>
+    <p>
+      This event offers a space to learn, network, and collaborate with fellow students and professionals in MedTech.
+    </p>
+  </ContentSection>
+
+  <SpeakersSection />
+  <ScheduleSection />
+
+  <section class="cmis-footer">
+    <p>
+      You can find the event on LinkedIn
+      <a href="https://www.linkedin.com/company/copenhagen-medtech/" target="_blank" rel="noopener noreferrer" class="link-elegant">here</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+  @use '../styles/mixins' as *;
+
+  .cmis-hero {
+    padding: 5rem 0 3rem;
+  }
+
+  .cmis-hero__inner {
+    @include container(72rem);
+    text-align: center;
+
+    h1 {
+      font-size: 2.5rem;
+
+      @include respond-to($bp-md) {
+        font-size: 3.75rem;
+      }
+    }
+  }
+
+  .cmis-hero__subtitle {
+    color: $color-muted-fg;
+    max-width: 36rem;
+    margin: 1rem auto 2rem;
+  }
+
+  .cmis-hero__cta {
+    margin-bottom: 3rem;
+  }
+
+  .cmis-footer {
+    padding: 3rem 0;
+    text-align: center;
+    @include container;
+
+    p {
+      color: $color-muted-fg;
+    }
+  }
+</style>

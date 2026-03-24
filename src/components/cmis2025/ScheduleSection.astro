@@ -1,0 +1,119 @@
+---
+import Button from '../shared/Button.astro';
+---
+
+<section class="schedule">
+  <div class="schedule__inner">
+    <h2>Event Schedule</h2>
+    <div class="schedule__grid">
+      <div class="schedule__card">
+        <h3>MedTech Careers</h3>
+        <p class="schedule__time">15:00 – 17:30</p>
+        <p class="schedule__detail">With Medicoindustrien Companies (e.g., Novo Nordisk)</p>
+        <div class="schedule__price schedule__price--free">FREE</div>
+        <p class="schedule__note">Open to all students</p>
+      </div>
+      <div class="schedule__card">
+        <h3>Innovation Summit</h3>
+        <p class="schedule__time">17:45 – 21:00</p>
+        <p class="schedule__detail">Copenhagen MedTech Innovation Summit talks</p>
+        <div class="schedule__price schedule__price--paid">29 DKK</div>
+        <p class="schedule__note">Includes dinner and beverages</p>
+      </div>
+    </div>
+    <p class="schedule__disclaimer">
+      Participation in MedTech Careers is free, but a ticket is required for the Innovation Summit.
+      The fee ensures attendance commitment.
+    </p>
+    <div class="schedule__cta">
+      <Button href="https://lnkd.in/dskPYDDM" variant="primary" size="lg" premium external>
+        Get Your Ticket
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .schedule {
+    padding: 4rem 0;
+    background-color: rgba($color-primary, 0.05);
+  }
+
+  .schedule__inner {
+    @include container(72rem);
+    text-align: center;
+
+    h2 {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .schedule__grid {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 2rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .schedule__card {
+    background-color: $color-card;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    padding: 2rem;
+    text-align: center;
+
+    h3 {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .schedule__time {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $color-primary;
+    margin-bottom: 0.75rem;
+  }
+
+  .schedule__detail {
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+    margin-bottom: 1rem;
+  }
+
+  .schedule__price {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: $radius-full;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+
+    &--free {
+      background-color: rgba($color-success, 0.1);
+      color: $color-success;
+    }
+
+    &--paid {
+      background-color: rgba($color-primary, 0.1);
+      color: $color-primary;
+    }
+  }
+
+  .schedule__note {
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+  }
+
+  .schedule__disclaimer {
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+    max-width: 40rem;
+    margin: 0 auto 2rem;
+  }
+</style>

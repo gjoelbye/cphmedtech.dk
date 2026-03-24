@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import InfoCard from '../components/contact/InfoCard.astro';
+import ContactForm from '../components/contact/ContactForm.astro';
+import contactBg from '../assets/images/contact.jpg';
+---
+
+<BaseLayout
+  title="Get in Touch"
+  description="Contact Copenhagen MedTech — become a member, support our mission, or ask us about events, partnerships, and our organization."
+>
+  <section class="contact-page">
+    <div class="contact-page__bg">
+      <Image
+        src={contactBg}
+        alt=""
+        widths={[640, 1024, 1920]}
+        sizes="100vw"
+        loading="eager"
+        class="contact-page__bg-img"
+      />
+      <div class="contact-page__overlay"></div>
+    </div>
+    <div class="contact-page__inner">
+      <div class="contact-page__grid">
+        <div class="contact-page__info">
+          <h1>Get in Touch</h1>
+          <p class="contact-page__subtitle">
+            Interested in supporting us, becoming a member, or have questions about our events? We'd love to hear from you.
+          </p>
+          <div class="contact-page__cards">
+            <InfoCard icon="users" title="Become a Member">
+              Join Copenhagen MedTech and become part of a vibrant community connecting students and professionals
+              in the MedTech industry. Members get early access to events, exclusive networking opportunities,
+              and the chance to shape the future of MedTech in Copenhagen.
+            </InfoCard>
+            <InfoCard icon="heart" title="Support Our Mission">
+              As a non-profit student organisation, we rely on the support of external funding.
+              Your sponsorship helps us create valuable connections between students and the thriving
+              MedTech industry through our summits and events.
+            </InfoCard>
+            <InfoCard icon="mail" title="General Inquiries">
+              Have questions about our events, partnerships, or organization? We're here to help
+              and always excited to connect with people who share our passion for MedTech innovation.
+            </InfoCard>
+          </div>
+        </div>
+        <div class="contact-page__form">
+          <ContactForm />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+  @use '../styles/mixins' as *;
+
+  .contact-page {
+    position: relative;
+    min-height: calc(100vh - $nav-height);
+  }
+
+  .contact-page__bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .contact-page__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .contact-page__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba($color-bg, 0.85);
+  }
+
+  .contact-page__inner {
+    position: relative;
+    z-index: 1;
+    @include container;
+    padding-block: 3rem;
+
+    @include respond-to($bp-md) {
+      padding-block: 4rem;
+    }
+  }
+
+  .contact-page__grid {
+    display: grid;
+    gap: 3rem;
+
+    @include respond-to($bp-lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .contact-page__info {
+    h1 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .contact-page__subtitle {
+    color: $color-muted-fg;
+    margin-bottom: 2rem;
+  }
+
+  .contact-page__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>

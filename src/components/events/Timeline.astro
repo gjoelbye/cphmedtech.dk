@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import TimelineYear from './TimelineYear.astro';
+import TimelineCard from './TimelineCard.astro';
+
+const allEvents = await getCollection('events');
+
+// Sort by date descending
+const sorted = allEvents.sort(
+  (a, b) => new Date(b.data.sortDate).getTime() - new Date(a.data.sortDate).getTime()
+);
+
+// Group by year
+const grouped = sorted.reduce<Record<number, typeof sorted>>((acc, event) => {
+  const year = event.data.year;
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(event);
+  return acc;
+}, {});
+
+const years = Object.keys(grouped)
+  .map(Number)
+  .sort((a, b) => b - a);
+---
+
+<div class="timeline">
+  <div class="timeline__line"></div>
+  {years.map((year) => {
+    const events = grouped[year];
+    return (
+      <>
+        <TimelineYear year={year} />
+        {events.map((event, i) => (
+          <TimelineCard
+            title={event.data.title}
+            date={event.data.date}
+            description={event.data.description}
+            side={i % 2 === 0 ? 'left' : 'right'}
+            index={i}
+          />
+        ))}
+      </>
+    );
+  })}
+</div>
+
+<script src="../../scripts/timeline-observer.ts"></script>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .timeline {
+    position: relative;
+    @include container(72rem);
+    padding-block: 2rem;
+  }
+
+  .timeline__line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      rgba($color-primary, 0.2),
+      rgba($color-primary, 0.4),
+      rgba($color-primary, 0.2)
+    );
+
+    @include respond-to($bp-md) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+</style>

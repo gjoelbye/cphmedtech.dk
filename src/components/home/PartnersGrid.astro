@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import Button from '../shared/Button.astro';
+
+const allPartners = await getCollection('partners');
+const partners = allPartners.sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+
+// Dynamic imports for partner logos
+const logoModules = import.meta.glob<{ default: ImageMetadata }>('../../assets/logos/*', { eager: true });
+
+function getLogoSrc(filename: string): ImageMetadata | undefined {
+  const key = Object.keys(logoModules).find((k) => k.endsWith(`/${filename}`));
+  return key ? logoModules[key].default : undefined;
+}
+---
+
+<section class="partners-grid section">
+  <div class="partners-grid__inner">
+    <h2>Our Partners</h2>
+    <div class="partners-grid__logos">
+      {partners.map((partner) => {
+        const logoSrc = getLogoSrc(partner.data.logo);
+        return logoSrc ? (
+          <div class="partners-grid__logo-wrap">
+            <img
+              src={logoSrc.src}
+              alt={`${partner.data.name} logo`}
+              width={logoSrc.width}
+              height={logoSrc.height}
+              loading="lazy"
+              class="partners-grid__logo"
+            />
+          </div>
+        ) : null;
+      })}
+    </div>
+    <div class="partners-grid__cta">
+      <Button href="/partners/" variant="outline">
+        See All Partners
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .partners-grid {
+    background-color: $color-bg;
+    padding: 6rem 0;
+  }
+
+  .partners-grid__inner {
+    @include container(72rem);
+    text-align: center;
+
+    h2 {
+      margin-bottom: 3rem;
+    }
+  }
+
+  .partners-grid__logos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 3rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .partners-grid__logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .partners-grid__logo {
+    height: 3rem;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: $transition-smooth;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+
+  .partners-grid__cta {
+    margin-top: 1rem;
+  }
+</style>

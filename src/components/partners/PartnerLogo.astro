@@ -1,0 +1,45 @@
+---
+interface Props {
+  name: string;
+  logoSrc: ImageMetadata;
+  height?: string;
+}
+
+const { name, logoSrc, height = '3rem' } = Astro.props;
+---
+
+<div class="partner-logo">
+  <img
+    src={logoSrc.src}
+    alt={`${name} logo`}
+    width={logoSrc.width}
+    height={logoSrc.height}
+    loading="lazy"
+    class="partner-logo__img"
+    style={`height: ${height}`}
+  />
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+
+  .partner-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .partner-logo__img {
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: $transition-smooth;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+</style>
