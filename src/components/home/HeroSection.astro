@@ -25,7 +25,7 @@ import heroBackground from '../../assets/images/hero-background.jpg';
       A student organisation connecting students and stakeholders in the MedTech industry through our summit and other events.
     </p>
     <div class="hero__cta animate-fade-up animate-delay-3">
-      <Button href="/contact/" variant="outline" size="lg" class="hero__btn">
+      <Button href="/contact/" variant="outline" size="lg" class="btn--outline-light">
         Contact Us
       </Button>
     </div>
@@ -73,7 +73,7 @@ import heroBackground from '../../assets/images/hero-background.jpg';
   .hero__title {
     font-size: 3rem;
     font-weight: 700;
-    color: #fff;
+    color: $color-overlay-text;
 
     @include respond-to($bp-md) {
       font-size: 4.5rem;
@@ -83,14 +83,14 @@ import heroBackground from '../../assets/images/hero-background.jpg';
   .hero__divider {
     width: 8rem;
     height: 2px;
-    background: #fff;
+    background: $color-overlay-text;
     margin: 1.5rem auto;
   }
 
   .hero__subtitle {
     font-size: 1.5rem;
     font-weight: 300;
-    color: #fff;
+    color: $color-overlay-text;
 
     @include respond-to($bp-md) {
       font-size: 1.875rem;
@@ -98,27 +98,18 @@ import heroBackground from '../../assets/images/hero-background.jpg';
   }
 
   .hero__description {
-    font-size: 1.125rem;
-    color: rgba(255, 255, 255, 0.9);
-    max-width: 36rem;
+    font-size: 1.25rem;
+    color: $color-overlay-text-muted;
+    max-width: 40rem;
     margin: 1.5rem auto 0;
+    line-height: 1.8;
 
     @include respond-to($bp-md) {
-      font-size: 1.25rem;
+      font-size: 1.375rem;
     }
   }
 
   .hero__cta {
     margin-top: 2rem;
-  }
-
-  .hero__btn {
-    color: #fff;
-    border-color: #fff;
-
-    &:hover {
-      background: #fff;
-      color: $color-fg;
-    }
   }
 </style>

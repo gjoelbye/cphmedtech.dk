@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import Icon from '../shared/Icon.astro';
 import Button from '../shared/Button.astro';
-import Card from '../shared/Card.astro';
 
 const allEvents = await getCollection('events');
 const featured = allEvents.find((e) => e.data.isFeatured);
@@ -19,7 +18,7 @@ const features = [
   <section class="cmis-preview">
     <div class="cmis-preview__inner">
       <h2 class="cmis-preview__heading">{featured.data.title}</h2>
-      <Card class="cmis-preview__card">
+      <div class="card-premium cmis-preview__card">
         <div class="cmis-preview__info">
           <span class="cmis-preview__detail">
             <Icon name="calendar" size={18} />
@@ -47,14 +46,14 @@ const features = [
           ))}
         </div>
         <div class="cmis-preview__actions">
-          <Button href="/2025/" variant="primary" premium>
+          <Button href="/2025/" variant="primary" size="lg" premium>
             Learn More &amp; Register
           </Button>
-          <Button href="/contact/" variant="outline">
+          <Button href="/contact/" variant="outline" size="lg">
             Become a Member
           </Button>
         </div>
-      </Card>
+      </div>
     </div>
   </section>
 )}
@@ -74,12 +73,21 @@ const features = [
   }
 
   .cmis-preview__heading {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   .cmis-preview__card {
-    padding: 2.5rem;
+    padding: 2.5rem 1.5rem;
     text-align: center;
+    margin-top: 0.5rem;
+
+    @include respond-to($bp-sm) {
+      padding: 2.5rem;
+    }
+
+    @include respond-to($bp-md) {
+      padding: 3.5rem;
+    }
   }
 
   .cmis-preview__info {

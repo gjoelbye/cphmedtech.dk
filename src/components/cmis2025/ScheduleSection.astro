@@ -64,9 +64,14 @@ import Button from '../shared/Button.astro';
   .schedule__card {
     background-color: $color-card;
     border: 1px solid $color-border;
+    border-left: 4px solid $color-primary;
     border-radius: $radius-lg;
     padding: 2rem;
     text-align: center;
+
+    &:first-child {
+      border-left-color: $color-success;
+    }
 
     h3 {
       margin-bottom: 0.5rem;

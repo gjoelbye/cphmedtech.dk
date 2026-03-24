@@ -10,8 +10,8 @@ import Button from '../components/shared/Button.astro';
   <section class="not-found">
     <h1 class="not-found__code">404</h1>
     <p class="not-found__message">Oops! Page not found.</p>
-    <p class="not-found__description">The page you're looking for doesn't exist or has been moved.</p>
-    <Button href="/" variant="primary" premium>
+    <p class="not-found__description">The page you're looking for may have moved or no longer exists.</p>
+    <Button href="/" variant="primary" size="lg" premium>
       Return Home
     </Button>
   </section>
@@ -33,7 +33,7 @@ import Button from '../components/shared/Button.astro';
   .not-found__code {
     font-size: 6rem;
     font-weight: 700;
-    color: $color-primary;
+    color: $color-border;
     line-height: 1;
   }
 
@@ -47,5 +47,6 @@ import Button from '../components/shared/Button.astro';
   .not-found__description {
     color: $color-muted-fg;
     margin: 0.5rem 0 2rem;
+    max-width: 24rem;
   }
 </style>

@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 interface Props {
   variant?: 'primary' | 'outline';
   size?: 'base' | 'lg';
@@ -33,6 +35,7 @@ const externalAttrs = external
 {href ? (
   <a href={href} class={classes} {...externalAttrs}>
     <slot />
+    {external && <Icon name="external-link" size={14} />}
   </a>
 ) : (
   <button class={classes} type="submit">

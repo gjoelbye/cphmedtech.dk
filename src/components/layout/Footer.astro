@@ -64,7 +64,11 @@ const socialLinks = [
   .footer {
     background-color: $color-muted;
     border-top: 1px solid $color-border;
-    padding: 2.5rem 0;
+    padding: 3rem 0;
+
+    @include respond-to($bp-md) {
+      padding: 4rem 0;
+    }
   }
 
   .footer__inner {
@@ -79,9 +83,17 @@ const socialLinks = [
     text-align: center;
 
     @include respond-to($bp-md) {
-      flex-direction: row;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
       text-align: left;
+      gap: 2rem;
+    }
+  }
+
+  .footer__social {
+    @include respond-to($bp-md) {
+      justify-self: end;
     }
   }
 
@@ -107,10 +119,12 @@ const socialLinks = [
   .footer__link {
     font-size: 0.875rem;
     color: $color-muted-fg;
+    padding: 0.25rem 0;
     transition: color 0.3s ease;
 
     &:hover {
       color: $color-primary;
+      text-decoration: underline;
     }
   }
 
@@ -131,9 +145,13 @@ const socialLinks = [
 
   .footer__bottom {
     border-top: 1px solid $color-border;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     padding-top: 1.5rem;
     text-align: center;
+
+    @include respond-to($bp-md) {
+      text-align: left;
+    }
 
     p {
       font-size: 0.875rem;

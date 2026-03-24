@@ -67,6 +67,19 @@
     font-size: 1rem;
   }
 
+  &--outline-light {
+    background: rgba(255, 255, 255, 0.1);
+    color: $color-overlay-text;
+    border-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(4px);
+
+    &:hover {
+      background: #fff;
+      color: $color-fg;
+      border-color: #fff;
+    }
+  }
+
   &--premium {
     overflow: hidden;
     box-shadow: $shadow-soft;
@@ -85,8 +98,9 @@
 // Card styles
 .card-premium {
   background: $gradient-card;
-  border: 1px solid rgba($color-border, 0.5);
+  border: 1px solid rgba($color-border, 0.8);
   border-radius: $radius-lg;
+  box-shadow: $shadow-soft;
   transition: $transition-smooth;
 
   &:hover {

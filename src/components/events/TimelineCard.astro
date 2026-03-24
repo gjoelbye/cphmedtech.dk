@@ -5,9 +5,19 @@ interface Props {
   description: string;
   side: 'left' | 'right';
   index: number;
+  type?: string;
 }
 
-const { title, date, description, side, index } = Astro.props;
+const { title, date, description, side, index, type } = Astro.props;
+
+const typeLabels: Record<string, string> = {
+  summit: 'Summit',
+  hackathon: 'Hackathon',
+  lecture: 'Lecture',
+  'case-event': 'Case Event',
+  workshop: 'Workshop',
+  other: 'Event',
+};
 ---
 
 <div
@@ -16,7 +26,10 @@ const { title, date, description, side, index } = Astro.props;
 >
   <div class="timeline-card__dot"></div>
   <div class="timeline-card__content card-premium">
-    <h3 class="timeline-card__title">{title}</h3>
+    <div class="timeline-card__header">
+      <h3 class="timeline-card__title">{title}</h3>
+      {type && <span class={`timeline-card__type timeline-card__type--${type}`}>{typeLabels[type] || type}</span>}
+    </div>
     <span class="timeline-card__date">{date}</span>
     <p class="timeline-card__description">{description}</p>
   </div>
@@ -60,7 +73,7 @@ const { title, date, description, side, index } = Astro.props;
     border-radius: 50%;
     box-shadow: $shadow-glow;
     top: 1.5rem;
-    left: -0.5rem;
+    left: -0.625rem;
     z-index: 2;
 
     @include respond-to($bp-md) {
@@ -79,13 +92,58 @@ const { title, date, description, side, index } = Astro.props;
     padding: 1.5rem;
 
     &:hover {
+      transform: translateY(-2px);
       box-shadow: $shadow-strong;
     }
   }
 
+  .timeline-card__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
   .timeline-card__title {
     font-size: 1.125rem;
-    margin-bottom: 0.5rem;
+  }
+
+  .timeline-card__type {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.125rem 0.5rem;
+    border-radius: $radius-full;
+    background-color: rgba($color-primary, 0.1);
+    color: $color-primary;
+
+    &--summit {
+      background-color: rgba($color-primary, 0.1);
+      color: $color-primary;
+    }
+
+    &--hackathon {
+      background-color: rgba($color-success, 0.1);
+      color: $color-success;
+    }
+
+    &--lecture {
+      background-color: rgba($color-muted-fg, 0.1);
+      color: $color-muted-fg;
+    }
+
+    &--case-event {
+      background-color: rgba($color-accent, 0.1);
+      color: $color-accent;
+    }
+
+    &--workshop {
+      background-color: rgba(168, 85, 247, 0.1);
+      color: rgb(168, 85, 247);
+    }
   }
 
   .timeline-card__date {

@@ -40,3 +40,10 @@
 - Minimal client JS — only `timeline-observer.ts` and `mobile-menu.ts`
 - All external links: `target="_blank" rel="noopener noreferrer"`
 - Images use Astro's `<Image>` component for optimization
+
+## Design Conventions
+- Full-bleed images (hero, collage) have no border radius; contained images use `$radius-lg`
+- Text on dark backgrounds uses `$color-overlay-text` / `$color-overlay-text-muted` tokens
+- Buttons on dark backgrounds use `.btn--outline-light` modifier
+- Major sections use 6rem/4rem vertical padding (desktop/mobile)
+- Contact form uses `mailto:` action (upgrade path documented in ContactForm.astro)

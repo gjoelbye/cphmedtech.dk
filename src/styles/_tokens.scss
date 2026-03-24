@@ -16,6 +16,10 @@ $color-secondary: hsl(210, 40%, 96%);
 $color-destructive: hsl(0, 84%, 60%);
 $color-success: hsl(142, 76%, 36%);
 
+// Overlay text (for content on dark backgrounds/images)
+$color-overlay-text: #fff;
+$color-overlay-text-muted: rgba(255, 255, 255, 0.9);
+
 // Shadows
 $shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
 $shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.08);

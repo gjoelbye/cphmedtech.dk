@@ -94,13 +94,22 @@ const foundation = getPartnersForCategory('foundation');
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.875rem;
-    color: $color-muted-fg;
-    margin-bottom: 2rem;
-    transition: color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $color-fg;
+    margin-bottom: 1.5rem;
+    transition: $transition-smooth;
+
+    svg {
+      transition: transform 0.2s ease;
+    }
 
     &:hover {
       color: $color-primary;
+
+      svg {
+        transform: translateX(-3px);
+      }
     }
   }
 

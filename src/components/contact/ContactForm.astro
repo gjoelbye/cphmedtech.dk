@@ -4,6 +4,9 @@ import Button from '../shared/Button.astro';
 
 <div class="contact-form">
   <h2 class="contact-form__title">Send us a Message</h2>
+  <!-- mailto: form — opens the user's mail client with form data.
+       Upgrade path: replace with a Cloudflare Worker API endpoint at /api/contact
+       that forwards to an email service (Resend, SendGrid, etc). -->
   <form action="mailto:info@copenhagenmedtech.org" method="post" enctype="text/plain">
     <div class="contact-form__row">
       <div class="contact-form__field">

@@ -7,12 +7,13 @@ interface Props {
   imageSrc: ImageMetadata;
   imageAlt: string;
   reversed?: boolean;
+  muted?: boolean;
 }
 
-const { heading, subtitle, imageSrc, imageAlt, reversed = false } = Astro.props;
+const { heading, subtitle, imageSrc, imageAlt, reversed = false, muted = false } = Astro.props;
 ---
 
-<section class="content-section">
+<section class:list={['content-section', { 'content-section--muted': muted }]}>
   <div class:list={['content-section__grid', { 'content-section__grid--reversed': reversed }]}>
     <div class="content-section__image">
       <Image
@@ -41,6 +42,16 @@ const { heading, subtitle, imageSrc, imageAlt, reversed = false } = Astro.props;
   .content-section {
     padding: 4rem 0;
     @include container(72rem);
+
+    &--muted {
+      background-color: rgba($color-muted, 0.3);
+      max-width: none;
+      padding-inline: 0;
+
+      .content-section__grid {
+        @include container(72rem);
+      }
+    }
   }
 
   .content-section__grid {
@@ -67,9 +78,13 @@ const { heading, subtitle, imageSrc, imageAlt, reversed = false } = Astro.props;
 
   .content-section__img {
     width: 100%;
-    height: 20rem;
+    height: 16rem;
     object-fit: cover;
     border-radius: $radius-lg;
+
+    @include respond-to($bp-md) {
+      height: 24rem;
+    }
   }
 
   .content-section__text {

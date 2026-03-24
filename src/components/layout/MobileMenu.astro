@@ -21,6 +21,7 @@ function isActive(href: string): boolean {
   <div class="mobile-menu__backdrop" data-menu-close></div>
   <nav class="mobile-menu__panel" aria-label="Mobile navigation">
     <div class="mobile-menu__header">
+      <span class="mobile-menu__brand">Copenhagen MedTech</span>
       <button
         class="mobile-menu__close"
         aria-label="Close navigation menu"
@@ -96,8 +97,18 @@ function isActive(href: string): boolean {
 
   .mobile-menu__header {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .mobile-menu__brand {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $color-fg;
+    letter-spacing: $letter-spacing-heading;
   }
 
   .mobile-menu__close {

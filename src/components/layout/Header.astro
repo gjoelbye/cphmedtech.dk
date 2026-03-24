@@ -21,7 +21,7 @@ function isActive(href: string): boolean {
 <header class="header">
   <div class="header__inner">
     <a href="/" class="header__logo" aria-label="Copenhagen MedTech — Home">
-      <Image src={logo} alt="Copenhagen MedTech logo" width={120} height={54} loading="eager" />
+      <Image src={logo} alt="Copenhagen MedTech logo" width={240} height={108} quality={90} loading="eager" />
     </a>
 
     <nav class="header__nav" aria-label="Primary navigation">
@@ -132,10 +132,14 @@ function isActive(href: string): boolean {
     &--cta {
       margin-left: 0.5rem;
       color: $color-primary-fg;
+      background-color: $color-primary;
+      border-color: $color-primary;
       box-shadow: $shadow-soft;
 
       &:hover {
         color: $color-primary-fg;
+        background-color: $color-primary-hover;
+        border-color: $color-primary-hover;
         box-shadow: $shadow-medium;
       }
     }
