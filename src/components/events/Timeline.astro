@@ -23,26 +23,34 @@ const years = Object.keys(grouped)
   .sort((a, b) => b - a);
 ---
 
+{/* Global counter ensures sides always alternate across year boundaries */}
 <div class="timeline">
   <div class="timeline__line"></div>
-  {years.map((year) => {
-    const events = grouped[year];
-    return (
-      <>
-        <TimelineYear year={year} />
-        {events.map((event, i) => (
-          <TimelineCard
-            title={event.data.title}
-            date={event.data.date}
-            description={event.data.description}
-            type={event.data.type}
-            side={i % 2 === 0 ? 'left' : 'right'}
-            index={i}
-          />
-        ))}
-      </>
-    );
-  })}
+  {(() => {
+    let globalIndex = 0;
+    return years.map((year) => {
+      const events = grouped[year];
+      return (
+        <>
+          <TimelineYear year={year} />
+          {events.map((event, i) => {
+            const side = globalIndex % 2 === 0 ? 'left' : 'right';
+            globalIndex++;
+            return (
+              <TimelineCard
+                title={event.data.title}
+                date={event.data.date}
+                description={event.data.description}
+                type={event.data.type}
+                side={side}
+                index={i}
+              />
+            );
+          })}
+        </>
+      );
+    });
+  })()}
 </div>
 
 <script src="../../scripts/timeline-observer.ts"></script>

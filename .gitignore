@@ -4,3 +4,4 @@ dist/
 .wrangler/
 .env
 graphics_toolbox/
+CLAUDE.md

@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/layout/BaseHead.astro';
 import Header from '../components/layout/Header.astro';
 import MobileMenu from '../components/layout/MobileMenu.astro';
@@ -29,7 +28,6 @@ const { title, description, ogImage, canonicalPath, type } = Astro.props;
     >
       <slot name="head" />
     </BaseHead>
-    <ClientRouter />
   </head>
   <body>
     <a href="#main" class="sr-only skip-link">Skip to content</a>

@@ -22,15 +22,15 @@ const typeLabels: Record<string, string> = {
 
 <div
   class={`timeline-card timeline-card--${side}`}
-  style={`transition-delay: ${index * 100}ms`}
+  style={`transition-delay: ${index * 50}ms`}
 >
   <div class="timeline-card__dot"></div>
   <div class="timeline-card__content card-premium">
-    <div class="timeline-card__header">
-      <h3 class="timeline-card__title">{title}</h3>
+    <h3 class="timeline-card__title">{title}</h3>
+    <div class="timeline-card__meta">
+      <span class="timeline-card__date">{date}</span>
       {type && <span class={`timeline-card__type timeline-card__type--${type}`}>{typeLabels[type] || type}</span>}
     </div>
-    <span class="timeline-card__date">{date}</span>
     <p class="timeline-card__description">{description}</p>
   </div>
 </div>
@@ -54,7 +54,6 @@ const typeLabels: Record<string, string> = {
   .timeline-card--left {
     @include respond-to($bp-md) {
       margin-right: auto;
-      text-align: right;
     }
   }
 
@@ -97,16 +96,17 @@ const typeLabels: Record<string, string> = {
     }
   }
 
-  .timeline-card__header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.5rem;
+  .timeline-card__title {
+    font-size: 1.125rem;
     margin-bottom: 0.5rem;
   }
 
-  .timeline-card__title {
-    font-size: 1.125rem;
+  .timeline-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .timeline-card__type {
@@ -147,11 +147,9 @@ const typeLabels: Record<string, string> = {
   }
 
   .timeline-card__date {
-    display: inline-block;
     font-size: 0.875rem;
     font-weight: 500;
     color: $color-primary;
-    margin-bottom: 0.75rem;
   }
 
   .timeline-card__description {
