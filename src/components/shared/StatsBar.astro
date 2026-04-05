@@ -26,9 +26,13 @@ const stats = [
   .stats-bar {
     position: relative;
     z-index: 1;
-    padding: 8rem 0 4rem;
+    padding: 4rem 0 2rem;
     background: transparent;
     pointer-events: none;
+
+    @include respond-to($bp-md) {
+      padding: 8rem 0 4rem;
+    }
   }
 
   .stats-bar__inner {
