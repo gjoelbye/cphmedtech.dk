@@ -1,94 +1,30 @@
 // Keyframes
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
 
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes scale-up {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-2rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(2rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+@keyframes count-up-pulse {
+  0% { transform: scale(0.9); opacity: 0; }
+  60% { transform: scale(1.02); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 // Utility classes
-.animate-fade-up {
-  animation: fade-up 0.6s ease-out both;
+.animate-fade-up { animation: fade-up 0.5s ease-out both; }
+
+@for $i from 1 through 6 {
+  .animate-delay-#{$i} { animation-delay: #{$i * 0.08}s; }
 }
 
-.animate-fade-in {
-  animation: fade-in 0.4s ease-out both;
-}
-
-.animate-scale-up {
-  animation: scale-up 0.4s ease-out both;
-}
-
-// Stagger delay classes
-@for $i from 1 through 5 {
-  .animate-delay-#{$i} {
-    animation-delay: #{$i * 0.1}s;
-  }
-}
-
-// Timeline card reveal (controlled by IntersectionObserver)
+// Timeline cards
 .timeline-card {
   opacity: 0;
   transition: opacity 0.4s ease, transform 0.4s ease;
 
-  &--left {
-    transform: translateX(-1rem);
-  }
-
-  &--right {
-    transform: translateX(1rem);
-  }
+  &--left { transform: translateX(-1rem); }
+  &--right { transform: translateX(1rem); }
 
   &.is-visible {
     opacity: 1;
@@ -96,7 +32,14 @@
   }
 }
 
-// Respect reduced motion preference
+// Stat counter
+.stat-counter__number {
+  &.is-counting {
+    animation: count-up-pulse 0.6s ease-out both;
+  }
+}
+
+// Reduced motion
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

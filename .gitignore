@@ -5,3 +5,4 @@ dist/
 .env
 graphics_toolbox/
 CLAUDE.md
+.claude/

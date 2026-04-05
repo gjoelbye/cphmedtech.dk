@@ -1,0 +1,6 @@
+name: "Team Member"
+role: "Head of Marketing"
+department: "Marketing"
+bio: "Managing communications, social media, and brand presence."
+sortOrder: 5
+active: true

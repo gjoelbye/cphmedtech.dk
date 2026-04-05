@@ -1,0 +1,16 @@
+---
+interface Props {
+  value: number;
+  suffix?: string;
+  label: string;
+}
+
+const { value, suffix = '', label } = Astro.props;
+---
+
+<div class="stat-counter">
+  <span class="stat-counter__number" data-count-to={value} data-count-suffix={suffix}>
+    0{suffix}
+  </span>
+  <span class="stat-counter__label">{label}</span>
+</div>

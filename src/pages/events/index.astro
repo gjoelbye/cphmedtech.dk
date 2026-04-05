@@ -1,0 +1,103 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+import EventCard from '../../components/shared/EventCard.astro';
+import Button from '../../components/shared/Button.astro';
+
+const allEvents = await getCollection('events');
+const upcoming = allEvents
+  .filter((e) => e.data.isUpcoming)
+  .sort((a, b) => new Date(a.data.sortDate).getTime() - new Date(b.data.sortDate).getTime());
+
+const hasUpcoming = upcoming.length > 0;
+---
+
+<PageLayout
+  title="Events"
+  description="Explore upcoming Copenhagen MedTech events — summits, hackathons, lectures, and networking opportunities for students."
+>
+  <div class="events-page">
+    <h1>Events</h1>
+    <p class="events-page__intro">
+      From our flagship Innovation Summit to hands-on hackathons and industry lectures, there's always something happening at Copenhagen MedTech.
+    </p>
+
+    <section class="events-upcoming">
+      <h2>Upcoming Events</h2>
+      {hasUpcoming ? (
+        <div class="events-upcoming__grid">
+          {upcoming.map((event) => (
+            <EventCard
+              title={event.data.title}
+              date={event.data.date}
+              sortDate={new Date(event.data.sortDate)}
+              location={event.data.location}
+              time={event.data.time}
+              type={event.data.type}
+              registrationUrl={event.data.registrationUrl}
+              externalUrl={event.data.externalUrl}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="events-upcoming__empty">
+          <p>Stay tuned — new events coming soon.</p>
+          <p>Follow us on social media to be the first to know.</p>
+        </div>
+      )}
+    </section>
+
+    <section class="events-archive-link">
+      <h2>Past Events</h2>
+      <p>Browse our complete event history since 2022.</p>
+      <Button href="/events/archive/" variant="outline">View Event Archive</Button>
+    </section>
+  </div>
+</PageLayout>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .events-page {
+    h1 { margin-bottom: 1rem; text-align: center; }
+  }
+
+  .events-page__intro {
+    color: $color-fg-muted;
+    max-width: 36rem;
+    margin: 0 auto 4rem;
+    text-align: center;
+  }
+
+  .events-upcoming {
+    margin-bottom: 4rem;
+
+    h2 { margin-bottom: 2rem; }
+  }
+
+  .events-upcoming__grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .events-upcoming__empty {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: $color-surface;
+    border-radius: $radius-lg;
+
+    p { color: $color-fg-muted; }
+    p + p { margin-top: 0.5rem; }
+  }
+
+  .events-archive-link {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: $color-surface;
+    border-radius: $radius-xl;
+
+    h2 { margin-bottom: 0.75rem; }
+    p { color: $color-fg-muted; margin-bottom: 2rem; }
+  }
+</style>

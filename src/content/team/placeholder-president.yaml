@@ -1,0 +1,6 @@
+name: "Team Member"
+role: "President"
+department: "Board"
+bio: "Leading Copenhagen MedTech's mission to connect students with the MedTech industry."
+sortOrder: 1
+active: true

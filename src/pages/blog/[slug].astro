@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import Icon from '../../components/shared/Icon.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = new Date(post.data.publishDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+>
+  <article class="post">
+    <header class="post__header">
+      <a href="/blog/" class="post__back">
+        <Icon name="arrow-left" size={16} />
+        Back to Blog
+      </a>
+      <span class="post__date">{formattedDate}</span>
+      <h1 class="post__title">{post.data.title}</h1>
+      <p class="post__description">{post.data.description}</p>
+      {post.data.tags && post.data.tags.length > 0 && (
+        <div class="post__tags">
+          {post.data.tags.map((tag: string) => (
+            <span class="badge">{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+    <div class="post__content">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .post {
+    padding: 3rem 0 5rem;
+  }
+
+  .post__header {
+    @include container($container-narrow);
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .post__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: $color-fg;
+    margin-bottom: 2rem;
+    transition: color 0.2s ease;
+
+    &:hover { color: $color-primary; }
+  }
+
+  .post__date {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: $color-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+
+  .post__title {
+    font-size: 2rem;
+
+    @include respond-to($bp-md) { font-size: 2.5rem; }
+  }
+
+  .post__description {
+    color: $color-fg-muted;
+    margin-top: 1rem;
+    font-size: 1.125rem;
+  }
+
+  .post__tags {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .post__content {
+    @include container($container-narrow);
+
+    :global(h2) {
+      font-size: 1.5rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    :global(p) {
+      margin-bottom: 1.25rem;
+      line-height: 1.75;
+      color: $color-fg;
+    }
+
+    :global(a) {
+      color: $color-primary;
+      text-decoration: underline;
+    }
+
+    :global(ul), :global(ol) {
+      margin-bottom: 1.25rem;
+      padding-left: 1.5rem;
+      list-style: disc;
+
+      :global(li) {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+      }
+    }
+  }
+</style>

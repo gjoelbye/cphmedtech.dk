@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  name: string;
+  role: string;
+  photo?: string;
+  bio?: string;
+  linkedin?: string;
+}
+
+const { name, role, photo, bio, linkedin } = Astro.props;
+---
+
+<div class="team-card">
+  {photo ? (
+    <img src={photo} alt={name} class="team-card__photo" loading="lazy" width="96" height="96" />
+  ) : (
+    <div class="team-card__photo team-card__photo--placeholder">
+      <Icon name="users" size={32} />
+    </div>
+  )}
+  <h3 class="team-card__name">{name}</h3>
+  <p class="team-card__role">{role}</p>
+  {bio && <p class="team-card__bio">{bio}</p>}
+  {linkedin && (
+    <a href={linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${name} on LinkedIn`} class="team-card__linkedin">
+      <Icon name="linkedin" size={18} />
+    </a>
+  )}
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+
+  .team-card__photo--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 6rem;
+    height: 6rem;
+    border-radius: $radius-full;
+    background-color: $color-surface;
+    color: $color-fg-muted;
+    margin: 0 auto 1rem;
+    border: 3px solid $color-blue-100;
+  }
+</style>

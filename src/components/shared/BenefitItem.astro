@@ -1,0 +1,14 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<div class="benefit-item">
+  <Icon name="check" size={20} class="benefit-item__icon" />
+  <span class="benefit-item__text">{text}</span>
+</div>

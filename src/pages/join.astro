@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BenefitItem from '../components/shared/BenefitItem.astro';
+import Button from '../components/shared/Button.astro';
+import Icon from '../components/shared/Icon.astro';
+---
+
+<BaseLayout
+  title="Join Us"
+  description="Join Copenhagen MedTech — organize events, develop leadership skills, expand your network, and connect with the MedTech industry."
+>
+  <section class="join-hero section--surface">
+    <div class="join-hero__inner">
+      <h1>Join Copenhagen MedTech</h1>
+      <p class="join-hero__subtitle">
+        Be part of a motivated, international team shaping the future of MedTech in Denmark and beyond.
+      </p>
+    </div>
+  </section>
+
+  <section class="benefits section">
+    <div class="benefits__inner">
+      <h2>Why Join?</h2>
+      <div class="benefits__grid">
+        <BenefitItem text="Organize events and workshops at universities" />
+        <BenefitItem text="Develop skills in communication, leadership, and project management" />
+        <BenefitItem text="Expand your professional network with companies and industry leaders" />
+        <BenefitItem text="Connect directly with MedTech companies and startups" />
+        <BenefitItem text="Be part of a young, international, and motivated team" />
+        <BenefitItem text="Get early access to events and career opportunities" />
+      </div>
+    </div>
+  </section>
+
+  <section class="process section--surface section">
+    <div class="process__inner">
+      <h2>How It Works</h2>
+      <div class="process__steps">
+        <div class="process__step">
+          <span class="process__number">1</span>
+          <h3>Apply</h3>
+          <p>Send us your interest via the contact form with a brief intro about yourself and what role interests you.</p>
+        </div>
+        <div class="process__step">
+          <span class="process__number">2</span>
+          <h3>Meet</h3>
+          <p>We'll invite you for an informal chat to get to know you and discuss how you can contribute.</p>
+        </div>
+        <div class="process__step">
+          <span class="process__number">3</span>
+          <h3>Welcome</h3>
+          <p>Join the team, get onboarded, and start making an impact from day one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="join-cta section--dark section">
+    <div class="join-cta__inner">
+      <h2>Ready to make an impact?</h2>
+      <p>We'd love to hear from you.</p>
+      <Button href="/contact/" variant="outline-light" size="lg">
+        Get in Touch
+      </Button>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+  @use '../styles/mixins' as *;
+
+  .join-hero {
+    padding: 5rem 0 3rem;
+    text-align: center;
+  }
+
+  .join-hero__inner {
+    @include container($container-narrow);
+  }
+
+  .join-hero__subtitle {
+    font-size: 1.25rem;
+    color: $color-fg-muted;
+    max-width: 36rem;
+    margin: 1.5rem auto 0;
+    line-height: 1.7;
+  }
+
+  .benefits__inner {
+    @include container($container-narrow);
+
+    h2 { text-align: center; margin-bottom: 2.5rem; }
+  }
+
+  .benefits__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+
+  .process__inner {
+    @include container;
+
+    h2 { text-align: center; margin-bottom: 3rem; }
+  }
+
+  .process__steps {
+    display: grid;
+    gap: 2rem;
+    max-width: 48rem;
+    margin: 0 auto;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .process__step {
+    text-align: center;
+
+    h3 { margin-top: 0.75rem; font-size: 1.125rem; }
+    p { margin-top: 0.5rem; font-size: 0.875rem; color: $color-fg-muted; line-height: 1.6; }
+  }
+
+  .process__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: $radius-full;
+    background: $color-primary;
+    color: $color-primary-fg;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .join-cta__inner {
+    @include container;
+    text-align: center;
+
+    p { color: $color-overlay-text-muted; margin: 1rem 0 2rem; }
+  }
+</style>

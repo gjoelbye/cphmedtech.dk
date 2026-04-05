@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/shared/Button.astro';
+import Icon from '../../components/shared/Icon.astro';
+---
+
+<BaseLayout
+  title="Copenhagen MedTech Innovation Summit 2026"
+  description="The Copenhagen MedTech Innovation Summit returns in Fall 2026. Details coming soon."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Copenhagen MedTech Innovation Summit 2026",
+      "startDate": "2026-09-01",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "organizer": {
+        "@type": "Organization",
+        "name": "Copenhagen MedTech",
+        "url": "https://cphmedtech.dk"
+      }
+    })} />
+  </Fragment>
+
+  <section class="cmis-hero section--dark section">
+    <div class="cmis-hero__inner">
+      <h1 class="cmis-hero__title">CMIS 2026</h1>
+      <p class="cmis-hero__subtitle">Copenhagen MedTech Innovation Summit</p>
+      <p class="cmis-hero__date">Fall 2026</p>
+      <p class="cmis-hero__status">Details coming soon</p>
+      <div class="cmis-hero__actions">
+        <Button href="https://www.linkedin.com/company/copenhagen-medtech/" variant="outline-light" size="lg">
+          Follow for Updates
+        </Button>
+        <Button href="/events/cmis-2025/" variant="outline-light" size="lg">
+          See CMIS 2025
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="cmis-info section">
+    <div class="cmis-info__inner">
+      <h2>What is CMIS?</h2>
+      <p>
+        The Copenhagen MedTech Innovation Summit is our flagship annual event, uniting students, startups,
+        and industry leaders to explore the future of healthcare technology. Past editions have featured
+        international networking, inspiring talks, career opportunities, and hands-on workshops.
+      </p>
+      <a href="/events/archive/" class="link-arrow">
+        Browse Past Events <Icon name="chevron-right" size={16} />
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .cmis-hero__inner {
+    @include container($container-narrow);
+    text-align: center;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+
+  .cmis-hero__title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: $letter-spacing-display;
+    margin-bottom: 0.5rem;
+
+    @include respond-to($bp-md) { font-size: 4.5rem; }
+  }
+
+  .cmis-hero__subtitle {
+    font-size: 1.25rem;
+    color: $color-overlay-text-muted;
+    margin-bottom: 1.5rem;
+  }
+
+  .cmis-hero__date {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $color-overlay-text;
+    margin-bottom: 0.5rem;
+  }
+
+  .cmis-hero__status {
+    font-size: 1.125rem;
+    color: $color-overlay-text-muted;
+    margin-bottom: 2.5rem;
+  }
+
+  .cmis-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .cmis-info__inner {
+    @include container($container-narrow);
+    text-align: center;
+
+    h2 { margin-bottom: 1.25rem; }
+    p { color: $color-fg-muted; line-height: 1.75; margin-bottom: 1.5rem; }
+  }
+</style>

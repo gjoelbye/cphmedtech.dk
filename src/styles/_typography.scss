@@ -1,47 +1,47 @@
 @use 'tokens' as *;
 
-// Font face declarations
+// Font face declarations — Poppins (geometric sans-serif, matches Century Gothic)
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/inter-400.woff2') format('woff2');
+  src: url('/fonts/poppins-400.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/inter-500.woff2') format('woff2');
+  src: url('/fonts/poppins-500.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/inter-600.woff2') format('woff2');
+  src: url('/fonts/poppins-600.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/inter-700.woff2') format('woff2');
+  src: url('/fonts/poppins-700.woff2') format('woff2');
 }
 
-// Base body typography
 body {
   font-family: $font-family;
   font-weight: 400;
+  font-size: 1.0625rem;
   line-height: $line-height-body;
   letter-spacing: $letter-spacing-body;
+  color: $color-fg;
 }
 
-// Heading styles
 h1,
 h2,
 h3,
@@ -54,16 +54,22 @@ h6 {
   color: $color-fg;
 }
 
+// Display — hero headlines
 h1 {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
+  letter-spacing: $letter-spacing-display;
 
   @media (min-width: $bp-md) {
-    font-size: 3.75rem;
+    font-size: 3.5rem;
+  }
+
+  @media (min-width: $bp-lg) {
+    font-size: 4rem;
   }
 }
 
 h2 {
-  font-size: 1.875rem;
+  font-size: 1.75rem;
 
   @media (min-width: $bp-md) {
     font-size: 2.25rem;
@@ -72,12 +78,22 @@ h2 {
 
 h3 {
   font-size: 1.25rem;
+  font-weight: 600;
 
   @media (min-width: $bp-md) {
     font-size: 1.5rem;
   }
 }
 
+h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
 p {
   line-height: $line-height-body;
+}
+
+small {
+  font-size: 0.875rem;
 }

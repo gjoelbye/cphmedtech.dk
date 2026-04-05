@@ -3,12 +3,16 @@ import Icon from '../shared/Icon.astro';
 
 const currentYear = new Date().getFullYear();
 
-const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Past Events', href: '/past-events/' },
-  { label: '2025', href: '/2025/' },
-  { label: 'Our Partners', href: '/partners/' },
+const exploreLinks = [
+  { label: 'About', href: '/about/' },
+  { label: 'Events', href: '/events/' },
+  { label: 'Partners', href: '/partners/' },
+  { label: 'Blog', href: '/blog/' },
+];
+
+const connectLinks = [
   { label: 'Contact', href: '/contact/' },
+  { label: 'Join Us', href: '/join/' },
 ];
 
 const socialLinks = [
@@ -20,34 +24,45 @@ const socialLinks = [
 
 <footer class="footer">
   <div class="footer__inner">
-    <div class="footer__top">
+    <div class="footer__grid">
       <div class="footer__brand">
-        <p class="footer__name">Copenhagen MedTech</p>
+        <img src="/logos/cm-circle-sticker.svg" alt="Copenhagen MedTech" class="footer__logo" width="40" height="40" />
         <p class="footer__tagline">Shaping the future of MedTech</p>
+        <p class="footer__description">
+          A student organisation connecting students and stakeholders in the MedTech industry through summits and events.
+        </p>
       </div>
 
-      <nav class="footer__nav" aria-label="Footer navigation">
-        <ul class="footer__links">
-          {navLinks.map((link) => (
-            <li>
-              <a href={link.href} class="footer__link">{link.label}</a>
-            </li>
+      <div class="footer__col">
+        <h4 class="footer__heading">Explore</h4>
+        <ul class="footer__list">
+          {exploreLinks.map((link) => (
+            <li><a href={link.href} class="footer__link">{link.label}</a></li>
           ))}
         </ul>
-      </nav>
+      </div>
 
-      <div class="footer__social">
-        {socialLinks.map((link) => (
-          <a
-            href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={link.label}
-            class="footer__social-link"
-          >
-            <Icon name={link.name} size={20} />
-          </a>
-        ))}
+      <div class="footer__col">
+        <h4 class="footer__heading">Connect</h4>
+        <ul class="footer__list">
+          {connectLinks.map((link) => (
+            <li><a href={link.href} class="footer__link">{link.label}</a></li>
+          ))}
+        </ul>
+        <div class="footer__social">
+          {socialLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label} class="footer__social-link">
+              <Icon name={link.name} size={18} />
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__heading">Legal</h4>
+        <ul class="footer__list">
+          <li><a href="/privacy/" class="footer__link">Privacy Policy</a></li>
+        </ul>
       </div>
     </div>
 
@@ -62,100 +77,108 @@ const socialLinks = [
   @use '../../styles/mixins' as *;
 
   .footer {
-    background-color: $color-muted;
-    border-top: 1px solid $color-border;
-    padding: 3rem 0;
-
-    @include respond-to($bp-md) {
-      padding: 4rem 0;
-    }
+    background-color: $color-surface-dark;
+    color: $color-overlay-text-muted;
+    padding: 4rem 0 2rem;
   }
 
   .footer__inner {
-    @include container;
+    @include container($container-wide);
   }
 
-  .footer__top {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    text-align: center;
+  .footer__grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
 
-    @include respond-to($bp-md) {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: start;
-      text-align: left;
-      gap: 2rem;
+    @include respond-to($bp-sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to($bp-lg) {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
     }
   }
 
-  .footer__social {
-    @include respond-to($bp-md) {
-      justify-self: end;
+  .footer__brand {
+    @include respond-to($bp-sm) {
+      grid-column: span 2;
+    }
+
+    @include respond-to($bp-lg) {
+      grid-column: span 1;
     }
   }
 
-  .footer__name {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: $color-fg;
+  .footer__logo {
+    height: 2rem;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+    margin-bottom: 1rem;
   }
 
   .footer__tagline {
-    font-size: 0.875rem;
-    color: $color-muted-fg;
-    margin-top: 0.25rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: $color-overlay-text;
   }
 
-  .footer__links {
+  .footer__description {
+    font-size: 0.8125rem;
+    margin-top: 0.5rem;
+    line-height: 1.6;
+    max-width: 24rem;
+  }
+
+  .footer__heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $color-overlay-text;
+    margin-bottom: 1rem;
+  }
+
+  .footer__list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .footer__link {
     font-size: 0.875rem;
-    color: $color-muted-fg;
-    padding: 0.25rem 0;
-    transition: color 0.3s ease;
+    color: $color-overlay-text-muted;
+    transition: color 0.2s ease;
 
     &:hover {
-      color: $color-primary;
-      text-decoration: underline;
+      color: $color-overlay-text;
     }
   }
 
   .footer__social {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
+    margin-top: 1.25rem;
   }
 
   .footer__social-link {
-    color: $color-muted-fg;
-    transition: color 0.3s ease;
+    color: $color-overlay-text-muted;
+    transition: color 0.2s ease;
 
     &:hover {
-      color: $color-primary;
+      color: $color-overlay-text;
     }
   }
 
   .footer__bottom {
-    border-top: 1px solid $color-border;
-    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 3rem;
     padding-top: 1.5rem;
-    text-align: center;
-
-    @include respond-to($bp-md) {
-      text-align: left;
-    }
 
     p {
-      font-size: 0.875rem;
-      color: $color-muted-fg;
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.4);
     }
   }
 </style>

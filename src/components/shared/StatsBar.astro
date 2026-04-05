@@ -1,0 +1,44 @@
+---
+import StatCounter from './StatCounter.astro';
+
+const stats = [
+  { value: 16, suffix: '+', label: 'Events' },
+  { value: 4, suffix: '', label: 'Years' },
+  { value: 8, suffix: '+', label: 'Partners' },
+  { value: 500, suffix: '+', label: 'Attendees' },
+];
+---
+
+<section class="stats-bar">
+  <div class="stats-bar__inner">
+    {stats.map((stat) => (
+      <StatCounter value={stat.value} suffix={stat.suffix} label={stat.label} />
+    ))}
+  </div>
+</section>
+
+<script src="../../scripts/stat-counter.ts"></script>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .stats-bar {
+    position: relative;
+    z-index: 1;
+    padding: 8rem 0 4rem;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .stats-bar__inner {
+    @include container;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

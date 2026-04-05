@@ -1,48 +1,84 @@
 ---
 import Icon from '../shared/Icon.astro';
-import { Image } from 'astro:assets';
-import logo from '../../assets/logos/logo.jpg';
 
 const currentPath = Astro.url.pathname;
 
-const navLinks = [
-  { label: 'HOME', href: '/' },
-  { label: 'PAST EVENTS', href: '/past-events/' },
-  { label: '2025', href: '/2025/' },
+interface NavItem {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+}
+
+const navItems: NavItem[] = [
+  {
+    label: 'ABOUT',
+    href: '/about/',
+    children: [
+      { label: 'Our Mission', href: '/about/' },
+    ],
+  },
+  {
+    label: 'EVENTS',
+    href: '/events/',
+    children: [
+      { label: 'Upcoming Events', href: '/events/' },
+      { label: 'CMIS 2026', href: '/events/cmis-2026/' },
+    ],
+  },
+  { label: 'TIMELINE', href: '/events/archive/' },
   { label: 'PARTNERS', href: '/partners/' },
+  { label: 'BLOG', href: '/blog/' },
 ];
 
 function isActive(href: string): boolean {
   if (href === '/') return currentPath === '/';
   return currentPath.startsWith(href);
 }
+
+function isGroupActive(item: NavItem): boolean {
+  if (isActive(item.href)) return true;
+  return item.children?.some((c) => isActive(c.href)) ?? false;
+}
 ---
 
 <header class="header">
   <div class="header__inner">
     <a href="/" class="header__logo" aria-label="Copenhagen MedTech — Home">
-      <Image src={logo} alt="Copenhagen MedTech logo" width={240} height={108} quality={90} loading="eager" />
+      <img src="/logos/cm-circle-sticker.svg" alt="" class="header__logo-img" width="40" height="40" />
+      <span class="header__logo-text">Copenhagen <span class="header__logo-accent">MedTech</span></span>
     </a>
 
     <nav class="header__nav" aria-label="Primary navigation">
       <ul class="header__links">
-        {navLinks.map((link) => (
-          <li>
+        {navItems.map((item) => (
+          <li class:list={['header__item', { 'header__item--has-dropdown': item.children }]}>
             <a
-              href={link.href}
-              class:list={['header__link', { 'header__link--active': isActive(link.href) }]}
-              aria-current={isActive(link.href) ? 'page' : undefined}
+              href={item.href}
+              class:list={['header__link', { 'header__link--active': isGroupActive(item) }]}
+              aria-current={isActive(item.href) ? 'page' : undefined}
             >
-              {link.label}
+              {item.label}
+              {item.children && <Icon name="chevron-down" size={14} class="header__chevron" />}
             </a>
+            {item.children && (
+              <ul class="header__dropdown">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.href}
+                      class:list={['header__dropdown-link', { 'header__dropdown-link--active': isActive(child.href) }]}
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
         <li>
-          <a
-            href="/contact/"
-            class:list={['header__link header__link--cta btn btn--primary btn--premium', { 'header__link--active': isActive('/contact/') }]}
-          >
-            CONTACT
+          <a href="/join/" class="header__link header__link--cta btn btn--primary btn--premium">
+            JOIN US
           </a>
         </li>
       </ul>
@@ -70,14 +106,14 @@ function isActive(href: string): boolean {
     left: 0;
     right: 0;
     z-index: 50;
-    background-color: rgba($color-bg, 0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba($color-border, 0.4);
-    box-shadow: $shadow-soft;
+    background-color: rgba($color-bg, 0.96);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba($color-border, 0.5);
+    box-shadow: $shadow-xs;
   }
 
   .header__inner {
-    @include container;
+    @include container($container-wide);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -86,17 +122,40 @@ function isActive(href: string): boolean {
 
   .header__logo {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
 
-    img {
-      height: 3.5rem;
-      width: auto;
+  .header__logo-img {
+    height: 2.5rem;
+    width: 2.5rem;
+
+    @include respond-to($bp-md) {
+      height: 2.75rem;
+      width: 2.75rem;
     }
+  }
+
+  .header__logo-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $color-fg;
+    letter-spacing: -0.01em;
+
+    @include respond-to($bp-md) {
+      font-size: 1.75rem;
+    }
+  }
+
+  .header__logo-accent {
+    color: #284f77;
   }
 
   .header__nav {
     display: none;
 
-    @include respond-to($bp-md) {
+    @include respond-to($bp-lg) {
       display: block;
     }
   }
@@ -104,44 +163,98 @@ function isActive(href: string): boolean {
   .header__links {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.125rem;
+  }
 
-    @include respond-to($bp-md) {
-      gap: 0.5rem;
+  .header__item {
+    position: relative;
+
+    &--has-dropdown:hover .header__dropdown,
+    &--has-dropdown:focus-within .header__dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
     }
   }
 
   .header__link {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: $color-muted-fg;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: $color-fg-muted;
     border-radius: $radius;
-    transition: $transition-smooth;
+    transition: $transition-fast;
 
     &:hover {
       color: $color-primary;
-      background-color: rgba($color-secondary, 0.5);
+      background-color: $color-surface;
     }
 
     &--active {
       color: $color-primary;
-      background-color: rgba($color-primary, 0.05);
     }
 
     &--cta {
-      margin-left: 0.5rem;
+      margin-left: 0.75rem;
       color: $color-primary-fg;
       background-color: $color-primary;
       border-color: $color-primary;
-      box-shadow: $shadow-soft;
+      font-size: 0.8125rem;
+      letter-spacing: 0.03em;
 
       &:hover {
         color: $color-primary-fg;
         background-color: $color-primary-hover;
         border-color: $color-primary-hover;
-        box-shadow: $shadow-medium;
       }
+    }
+  }
+
+  .header__chevron {
+    transition: transform 0.2s ease;
+
+    .header__item--has-dropdown:hover & {
+      transform: rotate(180deg);
+    }
+  }
+
+  .header__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 12rem;
+    padding: 0.5rem;
+    background: $color-bg;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  }
+
+  .header__dropdown-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-fg;
+    border-radius: $radius-sm;
+    transition: $transition-fast;
+
+    &:hover {
+      background-color: $color-surface;
+      color: $color-primary;
+    }
+
+    &--active {
+      color: $color-primary;
+      background-color: rgba($color-primary, 0.05);
     }
   }
 
@@ -155,13 +268,8 @@ function isActive(href: string): boolean {
     color: $color-fg;
     cursor: pointer;
     border-radius: $radius;
-    transition: $transition-smooth;
 
-    &:hover {
-      background-color: $color-muted;
-    }
-
-    @include respond-to($bp-md) {
+    @include respond-to($bp-lg) {
       display: none;
     }
   }

@@ -1,26 +1,30 @@
+@use 'sass:color';
 @use 'tokens' as *;
 @use 'mixins' as *;
 
-// Container utility
-.container {
-  @include container;
-}
-
-.container--narrow {
-  @include container($container-narrow);
-}
-
-// Screen reader only
-.sr-only {
-  @include sr-only;
-}
+// Layout utilities
+.container { @include container; }
+.container--wide { @include container($container-wide); }
+.container--narrow { @include container($container-narrow); }
+.sr-only { @include sr-only; }
 
 // Section spacing
 .section {
-  padding-block: 4rem;
+  padding-block: 2.5rem;
 
-  @include respond-to($bp-md) {
-    padding-block: 6rem;
+  @include respond-to($bp-lg) {
+    padding-block: 3.5rem;
+  }
+
+  &--surface {
+    background-color: $color-surface;
+  }
+
+  &--dark {
+    background: $gradient-brand;
+    color: $color-overlay-text;
+
+    h2, h3, h4, p { color: $color-overlay-text; }
   }
 }
 
@@ -31,13 +35,13 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.625rem 1.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
   border-radius: $radius;
   border: 2px solid transparent;
   cursor: pointer;
-  transition: $transition-smooth;
+  transition: $transition-base;
   white-space: nowrap;
 
   &--primary {
@@ -48,6 +52,7 @@
     &:hover {
       background-color: $color-primary-hover;
       border-color: $color-primary-hover;
+      box-shadow: $shadow-md;
     }
   }
 
@@ -62,16 +67,10 @@
     }
   }
 
-  &--lg {
-    padding: 0.75rem 2rem;
-    font-size: 1rem;
-  }
-
   &--outline-light {
     background: rgba(255, 255, 255, 0.1);
     color: $color-overlay-text;
-    border-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(4px);
+    border-color: rgba(255, 255, 255, 0.5);
 
     &:hover {
       background: #fff;
@@ -80,60 +79,308 @@
     }
   }
 
+  &--lg {
+    padding: 0.8rem 2.25rem;
+    font-size: 1.0625rem;
+    border-radius: $radius-md;
+  }
+
+  &--sm {
+    padding: 0.4rem 1rem;
+    font-size: 0.8125rem;
+  }
+
   &--premium {
-    overflow: hidden;
-    box-shadow: $shadow-soft;
+    box-shadow: $shadow-sm;
 
     &:hover {
-      transform: scale(1.02);
-      box-shadow: $shadow-medium;
+      transform: translateY(-2px);
+      box-shadow: $shadow-lg;
     }
 
     &:active {
-      transform: scale(0.98);
+      transform: translateY(0);
     }
   }
 }
 
-// Card styles
-.card-premium {
-  background: $gradient-card;
-  border: 1px solid rgba($color-border, 0.8);
+// Cards
+.card {
+  background: $color-card;
+  border: 1px solid $color-border;
   border-radius: $radius-lg;
-  box-shadow: $shadow-soft;
-  transition: $transition-smooth;
+  overflow: hidden;
+  transition: $transition-base;
 
   &:hover {
-    box-shadow: $shadow-medium;
+    box-shadow: $shadow-md;
+    transform: translateY(-3px);
   }
 }
 
-// Elegant link with animated underline
-.link-elegant {
-  position: relative;
-  display: inline-block;
+.card-premium {
+  background: $gradient-card;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  transition: $transition-base;
 
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+// Stat counter
+.stat-counter {
+  text-align: center;
+
+  &__number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $color-primary;
+    line-height: 1;
+
+    @include respond-to($bp-md) {
+      font-size: 3rem;
+    }
+  }
+
+  &__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-fg-muted;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+// Team card
+.team-card {
+  text-align: center;
+  padding: 1.5rem 1rem;
+
+  &__photo {
+    width: 6rem;
+    height: 6rem;
+    border-radius: $radius-full;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border: 3px solid $color-blue-100;
+  }
+
+  &__name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $color-fg;
+  }
+
+  &__role {
+    font-size: 0.8125rem;
+    color: $color-primary;
+    font-weight: 500;
+    margin-top: 0.125rem;
+  }
+
+  &__bio {
+    font-size: 0.8125rem;
+    color: $color-fg-muted;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+  }
+
+  &__linkedin {
+    display: inline-flex;
+    color: $color-fg-muted;
+    margin-top: 0.75rem;
+    transition: color 0.2s ease;
+
+    &:hover { color: $color-primary; }
+  }
+}
+
+// Blog card
+.blog-card {
+  &__image {
     width: 100%;
-    height: 2px;
-    background-color: $color-primary;
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.3s ease;
+    height: 12rem;
+    object-fit: cover;
+
+    @include respond-to($bp-md) {
+      height: 14rem;
+    }
   }
 
-  &:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
+  &__body {
+    padding: 1.5rem;
+  }
+
+  &__date {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: $color-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 0.375rem;
+    color: $color-fg;
+    line-height: 1.35;
+  }
+
+  &__excerpt {
+    font-size: 0.875rem;
+    color: $color-fg-muted;
+    margin-top: 0.5rem;
+    line-height: 1.6;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $color-primary;
+    margin-top: 1rem;
+    transition: gap 0.2s ease;
+
+    &:hover { gap: 0.5rem; }
   }
 }
 
-// Focus visible style for interactive elements
+// Event card (upcoming)
+.event-card {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.5rem;
+
+  &__date-badge {
+    flex-shrink: 0;
+    width: 4rem;
+    text-align: center;
+    background: $color-surface;
+    border-radius: $radius;
+    padding: 0.625rem 0.5rem;
+  }
+
+  &__day {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-primary;
+    line-height: 1;
+  }
+
+  &__month {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: $color-fg-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.125rem;
+  }
+
+  &__details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $color-fg;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.375rem;
+    font-size: 0.8125rem;
+    color: $color-fg-muted;
+  }
+
+  &__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  &__type {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.125rem 0.5rem;
+    border-radius: $radius-full;
+    background-color: rgba($color-primary, 0.1);
+    color: $color-primary;
+    margin-top: 0.5rem;
+  }
+}
+
+// Benefit item
+.benefit-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+
+  &__icon {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: $color-success;
+    margin-top: 0.125rem;
+  }
+
+  &__text {
+    font-size: 1rem;
+    color: $color-fg;
+    line-height: 1.5;
+  }
+}
+
+// Link styles
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 600;
+  color: $color-primary;
+  transition: gap 0.2s ease;
+
+  &:hover { gap: 0.625rem; }
+}
+
+// Badge / pill
+.badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.625rem;
+  border-radius: $radius-full;
+  background-color: rgba($color-primary, 0.1);
+  color: $color-primary;
+
+  &--success {
+    background-color: rgba($color-success, 0.1);
+    color: $color-success;
+  }
+
+  &--warm {
+    background-color: rgba($color-accent-warm, 0.15);
+    color: color.adjust($color-accent-warm, $lightness: -15%);
+  }
+}
+
+// Focus visible
 :focus-visible {
-  outline: 2px solid $color-primary;
+  outline: 2px solid $color-primary-light;
   outline-offset: 2px;
 }

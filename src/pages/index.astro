@@ -1,14 +1,43 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroSection from '../components/home/HeroSection.astro';
-import CMISPreview from '../components/home/CMISPreview.astro';
-import PhotoCollage from '../components/home/PhotoCollage.astro';
-import PartnersGrid from '../components/home/PartnersGrid.astro';
+import { getCollection } from 'astro:content';
+import HeroBanner from '../components/home/HeroBanner.astro';
+import StatsBar from '../components/shared/StatsBar.astro';
+import Button from '../components/shared/Button.astro';
+import Icon from '../components/shared/Icon.astro';
+import EventCard from '../components/shared/EventCard.astro';
+import BlogCard from '../components/shared/BlogCard.astro';
+import BenefitItem from '../components/shared/BenefitItem.astro';
+import { Image } from 'astro:assets';
+import crowdImg from '../assets/images/crowd.jpg';
+
+// Upcoming events
+const allEvents = await getCollection('events');
+const upcoming = allEvents
+  .filter((e) => e.data.isUpcoming)
+  .sort((a, b) => new Date(a.data.sortDate).getTime() - new Date(b.data.sortDate).getTime())
+  .slice(0, 3);
+
+// Blog preview
+const allPosts = await getCollection('blog');
+const latestPosts = allPosts
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 3);
+
+// Partners
+const allPartners = await getCollection('partners');
+const partners = allPartners.sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*', { eager: true });
+
+function getLogoSrc(filename: string): ImageMetadata | undefined {
+  const key = Object.keys(logoModules).find((k) => k.endsWith(`/${filename}`));
+  return key ? logoModules[key].default : undefined;
+}
 ---
 
 <BaseLayout
-  title="Shaping the Future of MedTech Innovation"
-  description="Copenhagen MedTech is a student organisation connecting students and stakeholders in the MedTech industry through innovative summits and events."
+  title="Shaping the Future of MedTech"
+  description="Copenhagen MedTech connects students and stakeholders in the MedTech industry through summits, hackathons, and networking events."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -16,7 +45,7 @@ import PartnersGrid from '../components/home/PartnersGrid.astro';
       "@type": "Organization",
       "name": "Copenhagen MedTech",
       "url": "https://cphmedtech.dk",
-      "description": "A student organisation connecting students and stakeholders in the MedTech industry through innovative summits and events.",
+      "description": "A student organisation connecting students and stakeholders in the MedTech industry.",
       "email": "info@copenhagenmedtech.org",
       "sameAs": [
         "https://www.linkedin.com/company/copenhagen-medtech/",
@@ -25,8 +54,302 @@ import PartnersGrid from '../components/home/PartnersGrid.astro';
       ]
     })} />
   </Fragment>
-  <HeroSection />
-  <CMISPreview />
-  <PhotoCollage />
-  <PartnersGrid />
+
+  <!-- 1. Hero with animated network banner -->
+  <HeroBanner />
+
+  <!-- 2. Impact stats -->
+  <StatsBar />
+
+  <!-- 3. About preview -->
+  <section class="about-preview section">
+    <div class="about-preview__inner">
+      <div class="about-preview__grid">
+        <div class="about-preview__text">
+          <h2>Who We Are</h2>
+          <p>
+            Copenhagen MedTech is a student-led organisation bridging the gap between ambitious students
+            and the MedTech industry. Through our flagship Innovation Summit, hackathons, and industry lectures,
+            we create spaces where the next generation of healthcare innovators can learn, connect, and grow.
+          </p>
+          <a href="/about/" class="link-arrow">
+            Learn More About Us <Icon name="chevron-right" size={16} />
+          </a>
+        </div>
+        <div class="about-preview__image">
+          <Image
+            src={crowdImg}
+            alt="Attendees at a Copenhagen MedTech event"
+            widths={[400, 800]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            loading="lazy"
+            class="about-preview__img"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Upcoming events -->
+  <section class="upcoming section section--surface">
+    <div class="upcoming__inner">
+      <h2>Upcoming Events</h2>
+      {upcoming.length > 0 ? (
+        <div class="upcoming__grid">
+          {upcoming.map((event) => (
+            <EventCard
+              title={event.data.title}
+              date={event.data.date}
+              sortDate={new Date(event.data.sortDate)}
+              location={event.data.location}
+              time={event.data.time}
+              type={event.data.type}
+              registrationUrl={event.data.registrationUrl}
+              externalUrl={event.data.externalUrl}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="upcoming__empty">New events coming soon. Follow us on social media to stay updated.</p>
+      )}
+      <div class="upcoming__cta">
+        <Button href="/events/" variant="outline">See All Events</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team preview hidden — re-enable when team data is ready -->
+
+  <!-- 6. Blog preview -->
+  {latestPosts.length > 0 && (
+    <section class="blog-preview section section--surface">
+      <div class="blog-preview__inner">
+        <h2>Latest from Copenhagen MedTech</h2>
+        <div class="blog-preview__grid">
+          {latestPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              date={new Date(post.data.publishDate)}
+              description={post.data.description}
+              slug={post.data.slug}
+              coverImage={post.data.coverImage}
+            />
+          ))}
+        </div>
+        <div class="blog-preview__cta">
+          <a href="/blog/" class="link-arrow">
+            Read All Posts <Icon name="chevron-right" size={16} />
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 7. Partners -->
+  <section class="partners-home section">
+    <div class="partners-home__inner">
+      <h2>Our Partners</h2>
+      <div class="partners-home__logos">
+        {partners.map((partner) => {
+          const logoSrc = getLogoSrc(partner.data.logo);
+          return logoSrc ? (
+            <div class="partners-home__logo-wrap">
+              <img
+                src={logoSrc.src}
+                alt={`${partner.data.name} logo`}
+                width={logoSrc.width}
+                height={logoSrc.height}
+                loading="lazy"
+                class="partners-home__logo"
+              />
+            </div>
+          ) : null;
+        })}
+      </div>
+      <div class="partners-home__cta">
+        <Button href="/partners/" variant="outline">See All Partners</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Join CTA -->
+  <section class="join-home section--dark section">
+    <div class="join-home__inner">
+      <h2>Join Copenhagen MedTech</h2>
+      <p>Be part of a motivated, international team shaping the future of MedTech.</p>
+      <div class="join-home__benefits">
+        <BenefitItem text="Organize events and workshops" />
+        <BenefitItem text="Expand your professional network" />
+        <BenefitItem text="Develop leadership skills" />
+        <BenefitItem text="Connect with MedTech companies" />
+      </div>
+      <Button href="/join/" variant="outline-light" size="lg" premium>
+        Apply Now
+      </Button>
+    </div>
+  </section>
 </BaseLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+  @use '../styles/mixins' as *;
+
+  // About preview
+  .about-preview__inner {
+    @include container;
+  }
+
+  .about-preview__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .about-preview__text {
+    h2 { margin-bottom: 1.25rem; }
+    p { color: $color-fg-muted; margin-bottom: 1.5rem; line-height: 1.75; }
+  }
+
+  .about-preview__img {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    border-radius: $radius-xl;
+
+    @include respond-to($bp-md) { height: 24rem; }
+  }
+
+  // Upcoming events
+  .upcoming__inner {
+    @include container;
+    text-align: center;
+
+    h2 { margin-bottom: 2.5rem; }
+  }
+
+  .upcoming__grid {
+    display: grid;
+    gap: 1.5rem;
+    text-align: left;
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  .upcoming__empty {
+    color: $color-fg-muted;
+    padding: 2rem;
+  }
+
+  .upcoming__cta {
+    margin-top: 2.5rem;
+  }
+
+  // Team preview
+  .team-preview__inner {
+    @include container;
+    text-align: center;
+
+    h2 { margin-bottom: 2.5rem; }
+  }
+
+  .team-preview__grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+
+    @include respond-to($bp-md) { grid-template-columns: repeat(3, 1fr); }
+    @include respond-to($bp-lg) { grid-template-columns: repeat(6, 1fr); }
+  }
+
+  .team-preview__cta {
+    margin-top: 2.5rem;
+  }
+
+  // Blog preview
+  .blog-preview__inner {
+    @include container;
+    text-align: center;
+
+    h2 { margin-bottom: 2.5rem; }
+  }
+
+  .blog-preview__grid {
+    display: grid;
+    gap: 2rem;
+    text-align: left;
+
+    @include respond-to($bp-md) { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .blog-preview__cta {
+    margin-top: 2.5rem;
+  }
+
+  // Partners
+  .partners-home__inner {
+    @include container;
+    text-align: center;
+
+    h2 { margin-bottom: 3rem; }
+  }
+
+  .partners-home__logos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    align-items: center;
+    max-width: 56rem;
+    margin: 0 auto;
+
+    @include respond-to($bp-md) { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .partners-home__logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .partners-home__logo {
+    height: 2.5rem;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    opacity: 0.7;
+    transition: $transition-base;
+
+    &:hover { opacity: 1; transform: scale(1.05); }
+  }
+
+  .partners-home__cta {
+    margin-top: 3rem;
+  }
+
+  // Join CTA
+  .join-home__inner {
+    @include container($container-narrow);
+    text-align: center;
+
+    > p {
+      color: $color-overlay-text-muted;
+      margin-bottom: 2rem;
+      font-size: 1.125rem;
+    }
+  }
+
+  .join-home__benefits {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 24rem;
+    margin: 0 auto 2.5rem;
+    text-align: left;
+
+    :global(.benefit-item__text) { color: $color-overlay-text-muted; }
+    :global(.benefit-item__icon) { color: $color-blue-200; }
+  }
+</style>

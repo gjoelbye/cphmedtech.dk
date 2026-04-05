@@ -1,0 +1,6 @@
+name: "Team Member"
+role: "Vice President"
+department: "Board"
+bio: "Supporting organizational strategy and cross-team coordination."
+sortOrder: 2
+active: true

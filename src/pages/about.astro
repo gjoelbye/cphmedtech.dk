@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/shared/Icon.astro';
+import Button from '../components/shared/Button.astro';
+import StatsBar from '../components/shared/StatsBar.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="Copenhagen MedTech is a student-led organisation bridging the gap between students and the MedTech industry through summits, hackathons, and networking events."
+>
+  <section class="about-hero section--surface">
+    <div class="about-hero__inner">
+      <h1>Our Mission</h1>
+      <p class="about-hero__mission">
+        We connect ambitious students with the MedTech industry — through events, networking, and hands-on experience — to shape the next generation of healthcare innovators.
+      </p>
+    </div>
+  </section>
+
+  <StatsBar />
+
+  <section class="values section">
+    <div class="values__inner">
+      <h2>Our Values</h2>
+      <div class="values__grid">
+        <div class="values__card">
+          <div class="values__icon"><Icon name="network" size={28} /></div>
+          <h3>Connection</h3>
+          <p>We bridge the gap between students and industry, creating meaningful relationships that last beyond events.</p>
+        </div>
+        <div class="values__card">
+          <div class="values__icon"><Icon name="mic" size={28} /></div>
+          <h3>Inspiration</h3>
+          <p>We bring leading professionals, researchers, and entrepreneurs to share their journeys and insights.</p>
+        </div>
+        <div class="values__card">
+          <div class="values__icon"><Icon name="users" size={28} /></div>
+          <h3>Community</h3>
+          <p>We foster an inclusive community where students from all backgrounds can explore MedTech together.</p>
+        </div>
+        <div class="values__card">
+          <div class="values__icon"><Icon name="briefcase" size={28} /></div>
+          <h3>Impact</h3>
+          <p>We create real opportunities — career paths, collaborations, and skills that shape futures.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="story section--surface section">
+    <div class="story__inner">
+      <h2>Our Story</h2>
+      <div class="story__timeline">
+        <div class="story__milestone">
+          <span class="story__year">2022</span>
+          <p>Copenhagen MedTech launches with a pilot event, testing the concept of connecting students with MedTech professionals.</p>
+        </div>
+        <div class="story__milestone">
+          <span class="story__year">2023</span>
+          <p>First full-scale Innovation Summit. Hackathons with DTU Skylab and case events with McKinsey and Bain expand the program.</p>
+        </div>
+        <div class="story__milestone">
+          <span class="story__year">2024</span>
+          <p>Google Cloud hackathon, AI in Medicine series, and the biggest summit yet with industry panels and emerging technologies.</p>
+        </div>
+        <div class="story__milestone">
+          <span class="story__year">2025</span>
+          <p>International expansion with UK and US MedTech societies. MedTech Careers launched in collaboration with Medicoindustrien.</p>
+        </div>
+        <div class="story__milestone">
+          <span class="story__year">2026</span>
+          <p>Continued growth with new industry partnerships and the upcoming Innovation Summit 2026.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team CTA hidden — re-enable when team data is ready -->
+</BaseLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+  @use '../styles/mixins' as *;
+
+  .about-hero {
+    padding: 5rem 0 3rem;
+    text-align: center;
+  }
+
+  .about-hero__inner {
+    @include container($container-narrow);
+  }
+
+  .about-hero__mission {
+    font-size: 1.25rem;
+    color: $color-fg-muted;
+    max-width: 40rem;
+    margin: 1.5rem auto 0;
+    line-height: 1.7;
+
+    @include respond-to($bp-md) {
+      font-size: 1.375rem;
+    }
+  }
+
+  .values__inner {
+    @include container;
+    text-align: center;
+
+    h2 { margin-bottom: 3rem; }
+  }
+
+  .values__grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+
+    @include respond-to($bp-sm) { grid-template-columns: repeat(2, 1fr); }
+    @include respond-to($bp-lg) { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .values__card {
+    padding: 2rem 1.5rem;
+    border-radius: $radius-lg;
+    border: 1px solid $color-border;
+    background: $color-card;
+    transition: $transition-base;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: $shadow-md;
+    }
+
+    h3 { margin-top: 1rem; font-size: 1.125rem; }
+    p { margin-top: 0.5rem; font-size: 0.875rem; color: $color-fg-muted; line-height: 1.6; }
+  }
+
+  .values__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: $radius-full;
+    background: rgba($color-primary, 0.1);
+    color: $color-primary;
+  }
+
+  .story__inner {
+    @include container($container-narrow);
+
+    h2 { text-align: center; margin-bottom: 3rem; }
+  }
+
+  .story__timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 36rem;
+    margin: 0 auto;
+  }
+
+  .story__milestone {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+
+    p { font-size: 0.9375rem; color: $color-fg-muted; line-height: 1.6; }
+  }
+
+  .story__year {
+    flex-shrink: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: $color-primary;
+    min-width: 3rem;
+  }
+
+  .about-cta__inner {
+    @include container;
+    text-align: center;
+
+    p { color: $color-overlay-text-muted; margin: 1rem 0 2rem; }
+  }
+</style>

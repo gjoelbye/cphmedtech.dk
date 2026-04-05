@@ -1,0 +1,135 @@
+---
+import Button from '../shared/Button.astro';
+---
+
+<section class="hero-banner">
+  <div class="hero-banner__top">
+    <div class="hero-banner__headline">
+      <h1 class="hero-banner__title animate-fade-up">
+        Shaping the Future<br />of <span style="color: #284f77;">MedTech</span>
+      </h1>
+    </div>
+    <div class="hero-banner__info animate-fade-up animate-delay-2">
+      <p class="hero-banner__subtitle">
+        A student organisation connecting students and stakeholders in the MedTech industry through our summit and other events.
+      </p>
+      <div class="hero-banner__actions">
+        <Button href="/events/" variant="primary" size="lg" premium>
+          Explore Events
+        </Button>
+        <Button href="/join/" variant="outline" size="lg">
+          Join Us
+        </Button>
+      </div>
+    </div>
+  </div>
+  <div class="hero-banner__canvas-wrap">
+    <canvas id="network-canvas"></canvas>
+  </div>
+</section>
+
+<script>
+  import { initNetworkBanner } from '../../scripts/network-banner';
+  initNetworkBanner('network-canvas');
+
+  function adjustHeroHeight() {
+    const hero = document.querySelector('.hero-banner') as HTMLElement | null;
+    const wrap = document.querySelector('.hero-banner__canvas-wrap') as HTMLElement | null;
+    const top = document.querySelector('.hero-banner__top') as HTMLElement | null;
+    const stats = document.querySelector('.stats-bar') as HTMLElement | null;
+    if (!hero || !wrap || !top || !stats) return;
+
+    const wrapH = Math.max(224, Math.min(960, window.innerHeight - top.offsetHeight - 48));
+    wrap.style.height = `${wrapH}px`;
+    hero.style.marginBottom = `-${stats.offsetHeight + 8}px`;
+  }
+  adjustHeroHeight();
+  window.addEventListener('resize', adjustHeroHeight);
+</script>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .hero-banner {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, $color-bg 15%, $color-surface 40%);
+  }
+
+  .hero-banner__top {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+    @include container($container-wide);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 4rem;
+
+    @include respond-to($bp-md) {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding-top: 2rem;
+      padding-bottom: 5rem;
+    }
+
+    @include respond-to($bp-lg) {
+      padding-top: 2.5rem;
+      padding-bottom: 6rem;
+    }
+  }
+
+  .hero-banner__title {
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: $color-blue-800;
+    letter-spacing: $letter-spacing-display;
+    line-height: 1.05;
+
+    @include respond-to($bp-md) {
+      font-size: 3.5rem;
+    }
+
+    @include respond-to($bp-lg) {
+      font-size: 4.25rem;
+    }
+  }
+
+  .hero-banner__subtitle {
+    font-size: 1.0625rem;
+    color: $color-fg-muted;
+    line-height: 1.7;
+    max-width: 28rem;
+
+    @include respond-to($bp-md) {
+      font-size: 1.125rem;
+    }
+  }
+
+  .hero-banner__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    pointer-events: auto;
+  }
+
+  .hero-banner__canvas-wrap {
+    position: relative;
+    overflow: visible;
+    height: 28rem;
+
+    canvas {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: calc(100% + 20rem);
+      cursor: pointer;
+    }
+  }
+</style>

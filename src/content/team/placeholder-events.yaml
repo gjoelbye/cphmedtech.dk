@@ -1,0 +1,6 @@
+name: "Team Member"
+role: "Head of Events"
+department: "Events"
+bio: "Organizing Copenhagen MedTech's flagship summits and workshops."
+sortOrder: 3
+active: true

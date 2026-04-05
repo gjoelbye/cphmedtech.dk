@@ -1,0 +1,104 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+import TeamCard from '../components/shared/TeamCard.astro';
+import Button from '../components/shared/Button.astro';
+
+const allTeam = await getCollection('team');
+const activeTeam = allTeam.filter((m) => m.data.active).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+
+const departments = ['Board', 'Events', 'Marketing', 'Partnerships', 'Operations'] as const;
+---
+
+<PageLayout
+  title="Team"
+  description="Meet the team behind Copenhagen MedTech — volunteers who organize events, build partnerships, and connect students with the MedTech industry."
+>
+  <div class="team-page">
+    <h1>Our Team</h1>
+    <p class="team-page__intro">
+      Copenhagen MedTech is powered by dedicated student volunteers passionate about MedTech innovation.
+    </p>
+
+    {departments.map((dept) => {
+      const members = activeTeam.filter((m) => m.data.department === dept);
+      if (!members.length) return null;
+      return (
+        <section class="team-dept">
+          <h2 class="team-dept__title">{dept}</h2>
+          <div class="team-dept__grid">
+            {members.map((member) => (
+              <TeamCard
+                name={member.data.name}
+                role={member.data.role}
+                photo={member.data.photo}
+                bio={member.data.bio}
+                linkedin={member.data.linkedin}
+              />
+            ))}
+          </div>
+        </section>
+      );
+    })}
+
+    <section class="team-cta">
+      <h2>Want to join the team?</h2>
+      <p>We're always looking for passionate students to help shape the future of MedTech.</p>
+      <Button href="/join/" variant="primary" size="lg" premium>Apply Now</Button>
+    </section>
+  </div>
+</PageLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+  @use '../styles/mixins' as *;
+
+  .team-page {
+    text-align: center;
+
+    h1 { margin-bottom: 1rem; }
+  }
+
+  .team-page__intro {
+    color: $color-fg-muted;
+    max-width: 36rem;
+    margin: 0 auto 4rem;
+  }
+
+  .team-dept {
+    margin-bottom: 4rem;
+  }
+
+  .team-dept__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $color-fg-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+  }
+
+  .team-dept__grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include respond-to($bp-lg) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .team-cta {
+    background-color: $color-surface;
+    border-radius: $radius-xl;
+    padding: 3rem 2rem;
+    margin-top: 2rem;
+
+    h2 { margin-bottom: 0.75rem; }
+    p { color: $color-fg-muted; margin-bottom: 2rem; }
+  }
+</style>

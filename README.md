@@ -8,7 +8,7 @@ The official website for Copenhagen MedTech — a student organisation connectin
 
 - [Astro](https://astro.build) v6 — static site generator
 - SCSS with BEM naming conventions
-- MDX for rich content
+- MDX for blog content
 - Cloudflare Pages for hosting
 
 ## Getting Started
@@ -24,29 +24,70 @@ npm run preview   # Preview built site locally
 
 ```
 src/
-├── pages/          # Route-based pages (index, 2025, past-events, partners, contact, 404)
-├── layouts/        # BaseLayout (all pages), PageLayout (contained pages)
-├── components/     # Organized by feature (home, events, cmis2025, partners, contact, shared, layout)
+├── pages/          # 13 route-based pages
+├── layouts/        # BaseLayout, PageLayout
+├── components/     # Organized by feature
 ├── styles/         # SCSS partials (tokens, reset, typography, animations, mixins, components)
-├── content/        # YAML content collections (events, partners, speakers)
-├── assets/         # Images and logos (processed by Astro's image pipeline)
-└── scripts/        # Client-side scripts (mobile menu, timeline observer)
+├── content/        # YAML/MDX content collections
+├── assets/         # Images and logos (Astro image pipeline)
+└── scripts/        # Client-side JS (mobile menu, stat counter, timeline, network banner)
 ```
 
 ## Adding Content
 
-Content is managed through YAML files in `src/content/`. Schemas are validated by Zod at build time.
+Content is managed through YAML and MDX files. Schemas are validated by Zod at build time.
 
-1. **Add an event:** Create a YAML file in `src/content/events/` following the existing format
-2. **Add a partner:** Create a YAML file in `src/content/partners/` and add the logo to `src/assets/logos/`
-3. **Add a speaker:** Create a YAML file in `src/content/speakers/`
+### Add an event
+Create a YAML file in `src/content/events/`:
+```yaml
+title: "Event Name"
+date: "Month Day, Year"
+sortDate: YYYY-MM-DD
+year: 2025
+description: "Description of the event."
+type: summit  # summit | hackathon | lecture | case-event | workshop | other
+location: "Venue Name"
+isUpcoming: true  # shows on /events/ page
+registrationUrl: "https://..."
+time: "15:00 – 21:00"
+price: "Free"
+```
 
-Open a pull request — CI will validate the schema during build.
+### Add a team member
+Create a YAML file in `src/content/team/`:
+```yaml
+name: "Full Name"
+role: "Role Title"
+department: "Board"  # Board | Events | Marketing | Partnerships | Operations
+bio: "Short bio..."
+linkedin: "https://linkedin.com/in/..."
+sortOrder: 1
+active: true
+```
+
+### Add a blog post
+Create an MDX file in `src/content/blog/`:
+```mdx
+---
+title: "Post Title"
+slug: "post-slug"
+publishDate: 2025-01-15
+description: "Short description for cards and SEO."
+tags: ["tag1", "tag2"]
+---
+
+Write your content here using Markdown.
+```
+
+### Add a partner
+Create a YAML file in `src/content/partners/` and add the logo to `src/assets/logos/`.
+
+Open a pull request — CI validates schemas during build.
 
 ## Quality Checks
 
 ```bash
-npm run check       # TypeScript type checking
-npx stylelint "src/**/*.scss"  # SCSS linting
-npm run build       # Full build (validates all content schemas)
+npm run check                      # TypeScript type checking
+npx stylelint "src/**/*.scss"      # SCSS linting
+npm run build                      # Full build (validates all content)
 ```
