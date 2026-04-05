@@ -6,24 +6,69 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'npm'
 
       - run: npm ci
 
-      - name: Type check
-        run: npx astro check
-
       - name: Lint SCSS
         run: npx stylelint "src/**/*.scss"
 
-      - name: Build
+      - name: Content checks
+        run: |
+          echo "Checking for wrong email domain..."
+          ! grep -r 'copenhagenmedtech\.org' src/ || (echo "ERROR: Found @copenhagenmedtech.org - use @cphmedtech.dk" && exit 1)
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Astro type check
+        run: npx astro check
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Build site
         run: npm run build
+
+      - name: Upload build
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
