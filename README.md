@@ -108,11 +108,3 @@ npm run build                      # Full build (validates all content)
 ```
 
 CI runs all three checks on every PR. PRs must pass before merging.
-
-## Content Guidelines
-
-- Email: hello@cphmedtech.dk
-- No em dashes in text
-- Keep language natural and specific, not corporate or AI-sounding
-- Partner logos: WebP format, max 400px wide
-- All external links open in new tabs
