@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Timeline from '../components/events/Timeline.astro';
+---
+
+<BaseLayout
+  title="Timeline"
+  description="Copenhagen MedTech's event history. Summits, hackathons, lectures, and case events from 2022 to today."
+>
+  <section class="timeline-page">
+    <div class="timeline-page__header">
+      <h1>Timeline</h1>
+      <p>A timeline of Copenhagen MedTech events since our founding in 2022.</p>
+    </div>
+    <Timeline />
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../styles/tokens' as *;
+  @use '../styles/mixins' as *;
+
+  .timeline-page {
+    padding-block: 3rem;
+
+    @include respond-to($bp-md) {
+      padding-block: 4rem;
+    }
+  }
+
+  .timeline-page__header {
+    @include container;
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 { margin-bottom: 1rem; }
+    p { color: $color-fg-muted; max-width: 32rem; margin-inline: auto; }
+  }
+</style>
