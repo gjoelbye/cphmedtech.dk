@@ -14,7 +14,7 @@ interface Props {
 
 const { title, date, sortDate, location, time, type, registrationUrl, externalUrl } = Astro.props;
 
-const hasSpecificDate = /\d/.test(date);
+const hasSpecificDate = /\d{1,2}(st|nd|rd|th)/.test(date);
 const day = hasSpecificDate ? sortDate.getDate() : null;
 const month = hasSpecificDate ? sortDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase() : date;
 

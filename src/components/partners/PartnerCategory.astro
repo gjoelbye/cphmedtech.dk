@@ -4,6 +4,8 @@ import PartnerLogo from './PartnerLogo.astro';
 interface PartnerData {
   name: string;
   logoSrc: ImageMetadata;
+  website?: string;
+  scale?: number;
 }
 
 interface Props {
@@ -29,7 +31,7 @@ const {
   <h3 class="partner-category__title">{title}</h3>
   <div class="partner-category__grid">
     {partners.map((partner) => (
-      <PartnerLogo name={partner.name} logoSrc={partner.logoSrc} height={logoHeight} />
+      <PartnerLogo name={partner.name} logoSrc={partner.logoSrc} height={logoHeight} website={partner.website} scale={partner.scale} />
     ))}
   </div>
 </div>

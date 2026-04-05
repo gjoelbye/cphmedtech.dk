@@ -31,6 +31,7 @@ const partners = defineCollection({
     logo: z.string(),
     website: z.string().url().optional(),
     sortOrder: z.number().default(0),
+    logoScale: z.number().default(1),
   }),
 });
 

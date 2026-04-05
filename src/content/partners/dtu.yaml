@@ -2,3 +2,5 @@ name: "DTU"
 category: industry
 logo: "dtu-logo.webp"
 sortOrder: 5
+website: "https://www.dtu.dk"
+logoScale: 1.4

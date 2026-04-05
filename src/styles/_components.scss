@@ -68,9 +68,9 @@
   }
 
   &--outline-light {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 10%);
     color: $color-overlay-text;
-    border-color: rgba(255, 255, 255, 0.5);
+    border-color: rgb(255 255 255 / 50%);
 
     &:hover {
       background: #fff;

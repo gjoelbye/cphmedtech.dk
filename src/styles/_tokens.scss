@@ -2,56 +2,54 @@
 // Derived from the official Farvepalette and brand guidelines
 
 // Brand blues (from official palette, light to dark)
-$color-blue-50: hsl(220, 50%, 92%);   // Very light blue — surface backgrounds
-$color-blue-100: hsl(220, 40%, 80%);  // Light periwinkle — section fills
-$color-blue-200: hsl(220, 40%, 70%);  // Periwinkle — decorative, hover states
-$color-blue-300: hsl(210, 70%, 50%);  // Sky blue — highlights, badges, active
-$color-blue-400: hsl(210, 55%, 40%);  // Medium blue — secondary emphasis
-$color-blue-500: hsl(205, 65%, 33%);  // Primary blue — buttons, links, brand
-$color-blue-600: hsl(215, 50%, 28%);  // Deep blue — headings, logo text
-$color-blue-700: hsl(210, 55%, 22%);  // Dark blue — dark sections
-$color-blue-800: hsl(210, 50%, 15%);  // Navy — hero overlays, footer
-$color-blue-900: hsl(215, 40%, 10%);  // Near-black navy — deepest backgrounds
+$color-blue-50: hsl(220deg 50% 92%);   // Very light blue — surface backgrounds
+$color-blue-100: hsl(220deg 40% 80%);  // Light periwinkle — section fills
+$color-blue-200: hsl(220deg 40% 70%);  // Periwinkle — decorative, hover states
+$color-blue-300: hsl(210deg 70% 50%);  // Sky blue — highlights, badges, active
+$color-blue-400: hsl(210deg 55% 40%);  // Medium blue — secondary emphasis
+$color-blue-500: hsl(205deg 65% 33%);  // Primary blue — buttons, links, brand
+$color-blue-600: hsl(215deg 50% 28%);  // Deep blue — headings, logo text
+$color-blue-700: hsl(210deg 55% 22%);  // Dark blue — dark sections
+$color-blue-800: hsl(210deg 50% 15%);  // Navy — hero overlays, footer
+$color-blue-900: hsl(215deg 40% 10%);  // Near-black navy — deepest backgrounds
 
 // Semantic color aliases
 $color-primary: $color-blue-500;
 $color-primary-hover: $color-blue-600;
 $color-primary-light: $color-blue-300;
 $color-primary-dark: $color-blue-800;
-$color-primary-fg: #ffffff;
-
-$color-fg: hsl(215, 30%, 12%);
-$color-fg-muted: hsl(215, 15%, 45%);
-$color-bg: #ffffff;
+$color-primary-fg: #fff;
+$color-fg: hsl(215deg 30% 12%);
+$color-fg-muted: hsl(215deg 15% 45%);
+$color-bg: #fff;
 $color-surface: $color-blue-50;
 $color-surface-dark: $color-blue-800;
-$color-border: hsl(210, 25%, 88%);
-$color-card: #ffffff;
-
-$color-success: hsl(152, 60%, 38%);
-$color-accent-warm: hsl(35, 95%, 55%);
+$color-border: hsl(210deg 25% 88%);
+$color-card: #fff;
+$color-success: hsl(152deg 60% 38%);
+$color-accent-warm: hsl(35deg 95% 55%);
 
 // Overlay text (white-on-dark)
-$color-overlay-text: #ffffff;
-$color-overlay-text-muted: rgba(255, 255, 255, 0.85);
+$color-overlay-text: #fff;
+$color-overlay-text-muted: rgb(255 255 255 / 85%);
 
 // Shadows
-$shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
-$shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+$shadow-xs: 0 1px 2px rgb(0 0 0 / 4%);
+$shadow-sm: 0 2px 8px rgb(0 0 0 / 6%);
+$shadow-md: 0 4px 16px rgb(0 0 0 / 8%);
+$shadow-lg: 0 8px 32px rgb(0 0 0 / 10%);
+$shadow-xl: 0 16px 48px rgb(0 0 0 / 12%);
 $shadow-glow: 0 0 24px rgba($color-blue-500, 0.2);
 
 // Gradients
 $gradient-brand: linear-gradient(135deg, $color-blue-800 0%, $color-blue-500 100%);
 $gradient-brand-subtle: linear-gradient(135deg, $color-blue-700 0%, $color-blue-600 100%);
 $gradient-hero: linear-gradient(160deg, rgba($color-blue-800, 0.92) 0%, rgba($color-blue-600, 0.75) 100%);
-$gradient-surface: linear-gradient(180deg, $color-blue-50 0%, #ffffff 100%);
-$gradient-card: linear-gradient(145deg, #ffffff 0%, $color-blue-50 100%);
+$gradient-surface: linear-gradient(180deg, $color-blue-50 0%, #fff 100%);
+$gradient-card: linear-gradient(145deg, #fff 0%, $color-blue-50 100%);
 
 // Typography
-$font-family: 'Poppins', 'Century Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-family: 'Poppins', 'Century Gothic', -apple-system, blinkmacsystemfont, 'Segoe UI', sans-serif;
 $letter-spacing-body: -0.01em;
 $letter-spacing-heading: -0.02em;
 $letter-spacing-display: -0.03em;

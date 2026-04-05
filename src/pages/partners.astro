@@ -21,6 +21,8 @@ function getPartnersForCategory(category: string) {
     .map((p) => ({
       name: p.data.name,
       logoSrc: getLogoSrc(p.data.logo)!,
+      website: p.data.website,
+      scale: p.data.logoScale,
     }))
     .filter((p) => p.logoSrc);
 }
@@ -42,9 +44,9 @@ const foundation = getPartnersForCategory('foundation');
   <div class="partners-page">
     <h1>Our Partners</h1>
     <p class="partners-page__description">
-      Copenhagen MedTech is proud to collaborate with industry leaders, academic institutions,
-      and innovative companies that share our vision of advancing medical technology and connecting
-      the next generation of MedTech professionals.
+      We work with companies, universities, and organisations across the MedTech industry.
+      Together we organise events that give students direct access to the people and companies
+      working in healthcare technology.
     </p>
 
     <PartnerCategory

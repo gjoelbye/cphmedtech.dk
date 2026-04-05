@@ -8,6 +8,7 @@ import Icon from '../components/shared/Icon.astro';
 import EventCard from '../components/shared/EventCard.astro';
 import BlogCard from '../components/shared/BlogCard.astro';
 import BenefitItem from '../components/shared/BenefitItem.astro';
+import PartnerLogo from '../components/partners/PartnerLogo.astro';
 import { Image } from 'astro:assets';
 import crowdImg from '../assets/images/crowd.jpg';
 
@@ -46,7 +47,7 @@ function getLogoSrc(filename: string): ImageMetadata | undefined {
       "name": "Copenhagen MedTech",
       "url": "https://cphmedtech.dk",
       "description": "A student organisation connecting students and stakeholders in the MedTech industry.",
-      "email": "info@copenhagenmedtech.org",
+      "email": "hello@cphmedtech.dk",
       "sameAs": [
         "https://www.linkedin.com/company/copenhagen-medtech/",
         "https://www.instagram.com/cph_medtech/",
@@ -68,9 +69,9 @@ function getLogoSrc(filename: string): ImageMetadata | undefined {
         <div class="about-preview__text">
           <h2>Who We Are</h2>
           <p>
-            Copenhagen MedTech is a student-led organisation bridging the gap between ambitious students
-            and the MedTech industry. Through our flagship Innovation Summit, hackathons, and industry lectures,
-            we create spaces where the next generation of healthcare innovators can learn, connect, and grow.
+            Copenhagen MedTech is a student organisation that connects students with the MedTech industry.
+            Through our Innovation Summit, hackathons, and industry lectures, we create opportunities to
+            learn, build networks, and get real experience in healthcare technology.
           </p>
           <a href="/about/" class="link-arrow">
             Learn More About Us <Icon name="chevron-right" size={16} />
@@ -152,18 +153,16 @@ function getLogoSrc(filename: string): ImageMetadata | undefined {
       <div class="partners-home__logos">
         {partners.map((partner) => {
           const logoSrc = getLogoSrc(partner.data.logo);
-          return logoSrc ? (
-            <div class="partners-home__logo-wrap">
-              <img
-                src={logoSrc.src}
-                alt={`${partner.data.name} logo`}
-                width={logoSrc.width}
-                height={logoSrc.height}
-                loading="lazy"
-                class="partners-home__logo"
-              />
-            </div>
-          ) : null;
+          if (!logoSrc) return null;
+          return (
+            <PartnerLogo
+              name={partner.data.name}
+              logoSrc={logoSrc}
+              height="2.5rem"
+              website={partner.data.website}
+              scale={partner.data.logoScale}
+            />
+          );
         })}
       </div>
       <div class="partners-home__cta">
@@ -176,7 +175,7 @@ function getLogoSrc(filename: string): ImageMetadata | undefined {
   <section class="join-home section--dark section">
     <div class="join-home__inner">
       <h2>Join Copenhagen MedTech</h2>
-      <p>Be part of a motivated, international team shaping the future of MedTech.</p>
+      <p>Be part of a motivated, international team working across MedTech.</p>
       <div class="join-home__benefits">
         <BenefitItem text="Organize events and workshops" />
         <BenefitItem text="Expand your professional network" />
@@ -306,24 +305,6 @@ function getLogoSrc(filename: string): ImageMetadata | undefined {
     margin: 0 auto;
 
     @include respond-to($bp-md) { grid-template-columns: repeat(4, 1fr); }
-  }
-
-  .partners-home__logo-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-
-  .partners-home__logo {
-    height: 2.5rem;
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
-    opacity: 0.7;
-    transition: $transition-base;
-
-    &:hover { opacity: 1; transform: scale(1.05); }
   }
 
   .partners-home__cta {

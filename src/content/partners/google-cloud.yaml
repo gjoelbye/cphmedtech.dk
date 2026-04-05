@@ -2,3 +2,5 @@ name: "Google Cloud"
 category: industry
 logo: "google-cloud-logo.png"
 sortOrder: 9
+website: "https://cloud.google.com"
+logoScale: 1.4

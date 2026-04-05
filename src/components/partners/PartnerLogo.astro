@@ -3,22 +3,41 @@ interface Props {
   name: string;
   logoSrc: ImageMetadata;
   height?: string;
+  website?: string;
+  scale?: number;
 }
 
-const { name, logoSrc, height = '3rem' } = Astro.props;
+const { name, logoSrc, height = '3rem', website, scale = 1 } = Astro.props;
+const style = `height: ${height}; --scale: ${scale}`;
 ---
 
-<div class="partner-logo">
-  <img
-    src={logoSrc.src}
-    alt={`${name} logo`}
-    width={logoSrc.width}
-    height={logoSrc.height}
-    loading="lazy"
-    class="partner-logo__img"
-    style={`height: ${height}`}
-  />
-</div>
+{website ? (
+  <a href={website} target="_blank" rel="noopener noreferrer" class="partner-logo">
+    <img
+      src={logoSrc.src}
+      alt={`${name} logo`}
+      width={logoSrc.width}
+      height={logoSrc.height}
+      loading="lazy"
+      class="partner-logo__img"
+      style={style}
+    />
+    <span class="partner-logo__tooltip">{name}</span>
+  </a>
+) : (
+  <div class="partner-logo">
+    <img
+      src={logoSrc.src}
+      alt={`${name} logo`}
+      width={logoSrc.width}
+      height={logoSrc.height}
+      loading="lazy"
+      class="partner-logo__img"
+      style={style}
+    />
+    <span class="partner-logo__tooltip">{name}</span>
+  </div>
+)}
 
 <style lang="scss">
   @use '../../styles/tokens' as *;
@@ -28,18 +47,46 @@ const { name, logoSrc, height = '3rem' } = Astro.props;
     align-items: center;
     justify-content: center;
     padding: 1rem;
+    position: relative;
+  }
+
+  a.partner-logo {
+    cursor: pointer;
   }
 
   .partner-logo__img {
-    width: auto;
-    max-width: 12rem;
+    width: 100%;
     object-fit: contain;
     opacity: 0.8;
     transition: $transition-smooth;
+    transform: scale(var(--scale, 1));
+  }
 
-    &:hover {
-      opacity: 1;
-      transform: scale(1.05);
-    }
+  .partner-logo__tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: $color-blue-800;
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 0.375rem 0.75rem;
+    border-radius: $radius;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    box-shadow: $shadow-md;
+  }
+
+  .partner-logo:hover .partner-logo__img {
+    opacity: 1;
+    transform: scale(calc(var(--scale, 1) * 1.05));
+  }
+
+  .partner-logo:hover .partner-logo__tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 </style>

@@ -486,9 +486,9 @@ export function initNetworkBanner(canvasId: string) {
       if(t>=nextPkt && packets.length<8) {
         const from=Math.floor(rand()*LOGO_N);
         const nb=logoAdj[from]; if(nb.length){
-          packets.push({from,to:nb[Math.floor(rand()*nb.length)],st:t,dur:.6+rand()*.4});
+          packets.push({from,to:nb[Math.floor(rand()*nb.length)],st:t,dur:1.5+rand()*1.0});
         }
-        nextPkt=t+.3+rand()*.4;
+        nextPkt=t+.5+rand()*.5;
       }
       for(let i=packets.length-1;i>=0;i--){
         const pk=packets[i];
@@ -497,7 +497,7 @@ export function initNetworkBanner(canvasId: string) {
           else{
             const nb=logoAdj[pk.to];
             pk.from=pk.to; pk.to=nb[Math.floor(rand()*nb.length)];
-            pk.st=t; pk.dur=.6+rand()*.4;
+            pk.st=t; pk.dur=1.5+rand()*1.0;
           }
         }
       }
@@ -814,11 +814,11 @@ export function initNetworkBanner(canvasId: string) {
       ctx.globalAlpha=1;
 
       // === DATA PACKETS ===
-      ctx.fillStyle='rgba(160,210,255,0.7)';
+      ctx.fillStyle='rgba(140,190,240,0.9)';
       for(const pk of packets){
         const prog=clamp((t-pk.st)/pk.dur,0,1);
         const[ax,ay]=wp(pk.from),[bx,by]=wp(pk.to);
-        ctx.beginPath();ctx.arc(lerp(ax,bx,prog),lerp(ay,by,prog),4*px,0,TAU);ctx.fill();
+        ctx.beginPath();ctx.arc(lerp(ax,bx,prog),lerp(ay,by,prog),6*px,0,TAU);ctx.fill();
       }
 
       // === ELASTIC SNAP ANIMATION ===

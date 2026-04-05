@@ -2,3 +2,5 @@ name: "Rigshospitalet"
 category: industry
 logo: "rigshospitalet-logo.png"
 sortOrder: 7
+website: "https://www.rigshospitalet.dk"
+logoScale: 1.4
