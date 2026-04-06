@@ -30,7 +30,6 @@ import Button from '../shared/Button.astro';
 
 <script>
   import { initNetworkBanner } from '../../scripts/network-banner';
-  initNetworkBanner('network-canvas');
 
   function adjustHeroHeight() {
     const hero = document.querySelector('.hero-banner') as HTMLElement | null;
@@ -43,8 +42,19 @@ import Button from '../shared/Button.astro';
     wrap.style.height = `${wrapH}px`;
     hero.style.marginBottom = `-${stats.offsetHeight + 8}px`;
   }
+
+  // Set correct height BEFORE canvas init (prevents initial distortion)
   adjustHeroHeight();
-  window.addEventListener('resize', adjustHeroHeight);
+  initNetworkBanner('network-canvas');
+
+  // Only recalculate on WIDTH changes (prevents mobile scroll jank from address bar)
+  let lastWidth = window.innerWidth;
+  window.addEventListener('resize', () => {
+    if (window.innerWidth !== lastWidth) {
+      lastWidth = window.innerWidth;
+      adjustHeroHeight();
+    }
+  });
 </script>
 
 <style lang="scss">
