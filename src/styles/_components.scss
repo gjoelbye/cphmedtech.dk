@@ -24,7 +24,7 @@
     background: $gradient-brand;
     color: $color-overlay-text;
 
-    h2, h3, h4, p { color: $color-overlay-text; }
+    h1, h2, h3, h4, p { color: $color-overlay-text; }
   }
 }
 
@@ -320,6 +320,12 @@
     background-color: rgba($color-primary, 0.1);
     color: $color-primary;
     margin-top: 0.5rem;
+  }
+
+  &--linked {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
   }
 }
 

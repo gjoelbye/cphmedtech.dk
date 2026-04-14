@@ -20,6 +20,7 @@ const events = defineCollection({
     time: z.string().optional(),
     capacity: z.number().optional(),
     price: z.string().optional(),
+    pageUrl: z.string().optional(),
   }),
 });
 

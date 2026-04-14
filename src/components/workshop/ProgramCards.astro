@@ -1,0 +1,83 @@
+---
+import Icon from '../shared/Icon.astro';
+
+const activities = [
+  {
+    icon: 'mic',
+    title: 'Expert Talks',
+    description: 'Hear from clinicians and innovators shaping healthcare technology.',
+  },
+  {
+    icon: 'map-pin',
+    title: 'Tour of Rigshospitalet',
+    description: 'Explore clinical environments and see how technology supports modern healthcare.',
+  },
+  {
+    icon: 'briefcase',
+    title: 'Hands-on Case Work',
+    description: 'Work in teams on real healthcare challenges and explore solutions.',
+  },
+  {
+    icon: 'users',
+    title: 'Networking Dinner',
+    description: 'Connect with other participants during the free networking dinner.',
+  },
+];
+---
+
+<div class="program-cards">
+  {activities.map((a) => (
+    <div class="program-cards__item">
+      <div class="program-cards__icon">
+        <Icon name={a.icon} size={24} />
+      </div>
+      <h3 class="program-cards__title">{a.title}</h3>
+      <p class="program-cards__desc">{a.description}</p>
+    </div>
+  ))}
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .program-cards {
+    display: grid;
+    gap: 1.5rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .program-cards__item {
+    background: $color-card;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .program-cards__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: $radius-full;
+    background: rgba($color-primary, 0.1);
+    color: $color-primary;
+  }
+
+  .program-cards__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .program-cards__desc {
+    font-size: 0.9375rem;
+    color: $color-muted-fg;
+    line-height: 1.6;
+  }
+</style>

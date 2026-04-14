@@ -1,0 +1,342 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/shared/Button.astro';
+import Icon from '../../components/shared/Icon.astro';
+import ProgramCards from '../../components/workshop/ProgramCards.astro';
+import ContentSection from '../../components/cmis2025/ContentSection.astro';
+import crowdImg from '../../assets/images/crowd.jpg';
+---
+
+<BaseLayout
+  title="Inside the Hospital: Innovation Workshop 2026"
+  description="A full-day workshop at Rigshospitalet exploring innovation, medical technology, and digital solutions in healthcare. June 4, 2026. Free admission."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Inside the Hospital: Innovation Workshop 2026",
+      "startDate": "2026-06-04T09:00:00+02:00",
+      "endDate": "2026-06-04T21:00:00+02:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "Rigshospitalet",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Blegdamsvej 9",
+          "postalCode": "2100",
+          "addressLocality": "Copenhagen",
+          "addressCountry": "DK"
+        }
+      },
+      "organizer": [
+        {
+          "@type": "Organization",
+          "name": "Copenhagen MedTech",
+          "url": "https://cphmedtech.dk"
+        },
+        {
+          "@type": "Organization",
+          "name": "Rigshospitalet",
+          "url": "https://www.rigshospitalet.dk"
+        }
+      ],
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "DKK",
+        "availability": "https://schema.org/LimitedAvailability"
+      }
+    })} />
+  </Fragment>
+
+  <!-- Hero -->
+  <section class="workshop-hero section--dark section">
+    <div class="workshop-hero__inner">
+      <span class="workshop-hero__badge">Workshop</span>
+      <h1 class="workshop-hero__title">Inside the Hospital:<br />Innovation Workshop 2026</h1>
+      <p class="workshop-hero__subtitle">
+        A full-day workshop exploring innovation, medical technology, and digital solutions in healthcare.
+      </p>
+      <p class="workshop-hero__date">June 4, 2026 // Rigshospitalet, Copenhagen</p>
+      <Button href="https://docs.google.com/forms/d/1wqoKElN6TLdvfi8SFJGzZQmT0FxiASGRZBPMcdjouQY/viewform" variant="primary" size="lg" premium>
+        Sign Up
+      </Button>
+      <p class="workshop-hero__deadline">Free admission. Limited spots. Apply before May 24.</p>
+    </div>
+  </section>
+
+  <!-- Quick Info -->
+  <section class="workshop-info section">
+    <div class="workshop-info__inner">
+      <div class="workshop-info__cards">
+        <div class="workshop-info__card">
+          <div class="workshop-info__icon"><Icon name="calendar" size={24} /></div>
+          <h3>June 4th, 2026</h3>
+          <p>Full-day workshop</p>
+        </div>
+        <div class="workshop-info__card">
+          <div class="workshop-info__icon"><Icon name="map-pin" size={24} /></div>
+          <h3>Rigshospitalet</h3>
+          <p>Blegdamsvej 9, 2100 Copenhagen</p>
+        </div>
+        <div class="workshop-info__card">
+          <div class="workshop-info__icon"><Icon name="heart" size={24} /></div>
+          <h3>Free Admission</h3>
+          <p>Limited spots available</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <ContentSection
+    heading="About the Workshop"
+    imageSrc={crowdImg}
+    imageAlt="Students at a Copenhagen MedTech event"
+  >
+    <p>
+      Copenhagen MedTech and Rigshospitalet invite you to a full-day workshop at one of Denmark's
+      leading hospitals. Experience healthcare innovation up close through expert talks, a guided tour
+      of clinical environments, team-based case work, and a networking dinner.
+    </p>
+    <p>
+      This workshop is for students interested in medical technology, healthcare innovation, and
+      digital health solutions.
+    </p>
+  </ContentSection>
+
+  <!-- Program -->
+  <section class="workshop-program section--surface section">
+    <div class="workshop-program__inner">
+      <h2>What to Expect</h2>
+      <p class="workshop-program__intro">
+        The workshop is built around four activities, designed to give you a hands-on understanding of healthcare innovation.
+      </p>
+      <ProgramCards />
+    </div>
+  </section>
+
+  <!-- LinkedIn -->
+  <section class="workshop-linkedin section">
+    <div class="workshop-linkedin__inner">
+      <a href="https://www.linkedin.com/posts/cph-medtech_ai-medtech-digitalhealth-activity-7449728306863632384-NrwC" target="_blank" rel="noopener noreferrer" class="workshop-linkedin__link">
+        <Icon name="linkedin" size={20} />
+        <span>See the full announcement on LinkedIn</span>
+        <Icon name="external-link" size={16} />
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="workshop-cta section--dark section">
+    <div class="workshop-cta__inner">
+      <h2>Ready to explore healthcare innovation?</h2>
+      <p>Apply before May 24 to secure your spot. Admission is free.</p>
+      <Button href="https://docs.google.com/forms/d/1wqoKElN6TLdvfi8SFJGzZQmT0FxiASGRZBPMcdjouQY/viewform" variant="outline-light" size="lg" premium>
+        Sign Up
+      </Button>
+      <p class="workshop-cta__contact">
+        Questions? Reach out at <a href="mailto:hello@cphmedtech.dk">hello@cphmedtech.dk</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Partnership -->
+  <section class="workshop-partner section">
+    <div class="workshop-partner__inner">
+      <p>
+        In partnership with
+        <a href="https://www.rigshospitalet.dk" target="_blank" rel="noopener noreferrer">Rigshospitalet</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  // Hero
+  .workshop-hero__inner {
+    @include container($container-narrow);
+    text-align: center;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+
+  .workshop-hero__badge {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $color-blue-200;
+    border: 1px solid rgba($color-blue-200, 0.4);
+    border-radius: $radius-full;
+    padding: 0.25rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .workshop-hero__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: $letter-spacing-display;
+    margin-bottom: 1rem;
+
+    @include respond-to($bp-md) { font-size: 3rem; }
+    @include respond-to($bp-lg) { font-size: 3.5rem; }
+  }
+
+  .workshop-hero__subtitle {
+    font-size: 1.125rem;
+    color: $color-overlay-text-muted;
+    max-width: 36rem;
+    margin: 0 auto 1.5rem;
+    line-height: 1.7;
+  }
+
+  .workshop-hero__date {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $color-overlay-text;
+    margin-bottom: 2rem;
+  }
+
+  .workshop-hero__deadline {
+    font-size: 0.9375rem;
+    color: $color-overlay-text-muted;
+    margin-top: 1.5rem;
+  }
+
+  // Quick Info
+  .workshop-info__inner {
+    @include container;
+  }
+
+  .workshop-info__cards {
+    display: grid;
+    gap: 1.5rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .workshop-info__card {
+    text-align: center;
+    padding: 1.5rem;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    background: $color-card;
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0.75rem 0 0.25rem;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: $color-muted-fg;
+    }
+  }
+
+  .workshop-info__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: $radius-full;
+    background: rgba($color-primary, 0.1);
+    color: $color-primary;
+  }
+
+  // Program
+  .workshop-program__inner {
+    @include container;
+    text-align: center;
+
+    h2 { margin-bottom: 0.5rem; }
+  }
+
+  .workshop-program__intro {
+    color: $color-muted-fg;
+    max-width: 36rem;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  // LinkedIn
+  .workshop-linkedin__inner {
+    @include container($container-narrow);
+    text-align: center;
+  }
+
+  .workshop-linkedin__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.5rem;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    color: $color-fg;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: $transition-base;
+
+    &:hover {
+      background: $color-surface;
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+  }
+
+  // CTA
+  .workshop-cta__inner {
+    @include container($container-narrow);
+    text-align: center;
+
+    > p {
+      color: $color-overlay-text-muted;
+      margin-bottom: 2rem;
+      font-size: 1.125rem;
+    }
+  }
+
+  .workshop-cta__contact {
+    font-size: 0.875rem;
+    color: $color-overlay-text-muted;
+    margin-top: 2rem;
+
+    a {
+      color: $color-overlay-text;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+
+  // Partnership
+  .workshop-partner__inner {
+    @include container($container-narrow);
+    text-align: center;
+    padding: 2rem 0;
+
+    p {
+      font-size: 0.9375rem;
+      color: $color-muted-fg;
+    }
+
+    a {
+      color: $color-primary;
+      font-weight: 500;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+</style>
