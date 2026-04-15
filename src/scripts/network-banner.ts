@@ -400,10 +400,12 @@ export function initNetworkBanner(canvasId: string) {
     const attractOffX = new Float64Array(TOTAL_N);
     const attractOffY = new Float64Array(TOTAL_N);
     // Wide speed variation: 0.004–0.025 (follow), ~5× slower for return
-    const attractSpeed = Array.from({length:TOTAL_N}, () => 0.004 + rand() * 0.021);
+    const attractSpeed = Array.from({length:TOTAL_N}, () => 0.008 + rand() * 0.032);
     const returnSpeed  = Array.from({length:TOTAL_N}, () => 0.0008 + rand() * 0.004);
+    let hasActiveOffsets = false;
 
     function updateAttraction() {
+      hasActiveOffsets = false;
       for (let i = 0; i < TOTAL_N; i++) {
         if (i === dragIdx) continue;
         let tx = 0, ty = 0;
@@ -411,9 +413,9 @@ export function initNetworkBanner(canvasId: string) {
           const [x, y] = i < LOGO_N ? l2w(lp[i].x, lp[i].y) : [bgNodes[i-LOGO_N].x, bgNodes[i-LOGO_N].y];
           const dx = mouse.x - x, dy = mouse.y - y;
           const dist = Math.hypot(dx, dy) || 1;
-          if (dist < 400) {
-            const falloff = Math.pow(1 - dist / 400, 2);
-            const strength = 10 * falloff;
+          if (dist < 500) {
+            const falloff = Math.pow(1 - dist / 500, 2);
+            const strength = 25 * falloff;
             tx = (dx / dist) * strength;
             ty = (dy / dist) * strength;
           }
@@ -421,6 +423,7 @@ export function initNetworkBanner(canvasId: string) {
         const spd = mouse.inside ? attractSpeed[i] : returnSpeed[i];
         attractOffX[i] += (tx - attractOffX[i]) * spd;
         attractOffY[i] += (ty - attractOffY[i]) * spd;
+        if (Math.abs(attractOffX[i]) > 0.1 || Math.abs(attractOffY[i]) > 0.1) hasActiveOffsets = true;
       }
     }
 
@@ -632,13 +635,13 @@ export function initNetworkBanner(canvasId: string) {
       const entF=entDone?1:0; // entrance factor
 
       // === BACKGROUND ===
-      if(entDone && !mouse.inside) {
-        // Use offscreen cache (no mouse = no attraction needed)
+      if(entDone && !mouse.inside && !hasActiveOffsets) {
+        // Use offscreen cache (no attraction active)
         if(bgCacheDirty) buildBgCache();
         ctx.setTransform(1,0,0,1,0,0);
         ctx.drawImage(bgCacheCanvas,0,0);
         ctx.setTransform(scale*dpr,0,0,scale*dpr,offX*dpr,offY*dpr);
-      } else if(entDone && mouse.inside) {
+      } else if(entDone && (mouse.inside || hasActiveOffsets)) {
         // Draw bg WITH mouse attraction (all edges + nodes through wp/attract)
         for(const e of bgEdges) {
           if(e.bridge) continue;
@@ -748,7 +751,7 @@ export function initNetworkBanner(canvasId: string) {
       // === SPOKES ===
       for(let i=0;i<SPOKES.length;i++) {
         const ni=SNM[i];
-        const[sx,sy]=l2w(lp[ni].x,lp[ni].y);
+        const[sx,sy]=wp(ni);
         const[ex,ey]=l2w(li[i].x,li[i].y);
         const fe=t-sf[i];
         if(!entDone){
@@ -989,6 +992,7 @@ export function initNetworkBanner(canvasId: string) {
 
     try {
       canvas.addEventListener('pointerdown', (e: PointerEvent) => {
+        if(!entDone) return;
         const r=canvas.getBoundingClientRect();
         const mx=(e.clientX-r.left-offX)/scale;
         const my=(e.clientY-r.top-offY)/scale;
