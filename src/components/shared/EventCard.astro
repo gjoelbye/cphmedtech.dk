@@ -29,9 +29,10 @@ const typeLabels: Record<string, string> = {
 };
 
 const signupUrl = registrationUrl || externalUrl;
+const useLink = pageUrl && !signupUrl;
 ---
 
-{pageUrl ? (
+{useLink ? (
   <a href={pageUrl} class="event-card card event-card--linked">
     <div class="event-card__date-badge">
       {day && <span class="event-card__day">{day}</span>}
@@ -75,11 +76,18 @@ const signupUrl = registrationUrl || externalUrl;
         )}
       </div>
       <span class="event-card__type">{typeLabels[type] || type}</span>
-      {signupUrl && (
-        <a href={signupUrl} target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--sm" style="margin-top: 0.75rem;">
-          Register
-        </a>
-      )}
+      <div class="event-card__actions">
+        {signupUrl && (
+          <a href={signupUrl} target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--sm">
+            Register
+          </a>
+        )}
+        {pageUrl && (
+          <a href={pageUrl} class="event-card__learn-more">
+            Learn More <Icon name="chevron-right" size={14} />
+          </a>
+        )}
+      </div>
     </div>
   </div>
 )}

@@ -322,6 +322,26 @@
     margin-top: 0.5rem;
   }
 
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  &__learn-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: $color-primary;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   &--linked {
     text-decoration: none;
     color: inherit;
