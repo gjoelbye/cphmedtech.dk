@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import InfoCard from '../components/contact/InfoCard.astro';
-import ContactForm from '../components/contact/ContactForm.astro';
+import ContactOptions from '../components/contact/ContactOptions.astro';
 import contactBg from '../assets/images/contact.jpg';
 ---
 
@@ -29,25 +29,25 @@ import contactBg from '../assets/images/contact.jpg';
           <p class="contact-page__subtitle">
             Interested in supporting us, becoming a member, or have questions about our events? We'd love to hear from you.
           </p>
-          <div class="contact-page__cards">
-            <InfoCard icon="users" title="Become a Member">
-              Join Copenhagen MedTech and become part of a vibrant community connecting students and professionals
-              in the MedTech industry. Members get early access to events, exclusive networking opportunities,
-              and the chance to shape the future of MedTech in Copenhagen.
-            </InfoCard>
-            <InfoCard icon="heart" title="Support Our Mission">
-              As a non-profit student organisation, we rely on the support of external funding.
-              Your sponsorship helps us create valuable connections between students and the thriving
-              MedTech industry through our summits and events.
-            </InfoCard>
-            <InfoCard icon="mail" title="General Inquiries">
-              Have questions about our events, partnerships, or organization? We're here to help
-              and always excited to connect with people who share our passion for MedTech innovation.
-            </InfoCard>
-          </div>
         </div>
-        <div class="contact-page__form">
-          <ContactForm />
+        <div class="contact-page__options">
+          <ContactOptions />
+        </div>
+        <div class="contact-page__cards">
+          <InfoCard icon="users" title="Become a Member">
+            Join Copenhagen MedTech and become part of a vibrant community connecting students and professionals
+            in the MedTech industry. Members get early access to events, exclusive networking opportunities,
+            and the chance to shape the future of MedTech in Copenhagen.
+          </InfoCard>
+          <InfoCard icon="heart" title="Support Our Mission">
+            As a non-profit student organisation, we rely on the support of external funding.
+            Your sponsorship helps us create valuable connections between students and the thriving
+            MedTech industry through our summits and events.
+          </InfoCard>
+          <InfoCard icon="mail" title="General Inquiries">
+            Have questions about our events, partnerships, or organization? We're here to help
+            and always excited to connect with people who share our passion for MedTech innovation.
+          </InfoCard>
         </div>
       </div>
     </div>
@@ -91,29 +91,50 @@ import contactBg from '../assets/images/contact.jpg';
     }
   }
 
+  // Phones: intro, contact options, then the info cards.
+  // Desktop: intro and info cards on the left, contact options on the right.
   .contact-page__grid {
     display: grid;
-    gap: 3rem;
+    gap: 2rem;
 
     @include respond-to($bp-lg) {
       grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+        'info options'
+        'cards options';
+      column-gap: 3rem;
     }
   }
 
   .contact-page__info {
+    @include respond-to($bp-lg) {
+      grid-area: info;
+    }
+
     h1 {
       margin-bottom: 1rem;
     }
   }
 
+  .contact-page__options {
+    align-self: start;
+
+    @include respond-to($bp-lg) {
+      grid-area: options;
+    }
+  }
+
   .contact-page__subtitle {
     color: $color-muted-fg;
-    margin-bottom: 2rem;
   }
 
   .contact-page__cards {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+
+    @include respond-to($bp-lg) {
+      grid-area: cards;
+    }
   }
 </style>

@@ -1,0 +1,162 @@
+---
+import Icon from '../shared/Icon.astro';
+
+const channels = [
+  {
+    icon: 'mail',
+    label: 'Email',
+    handle: 'hello@cphmedtech.dk',
+    href: 'mailto:hello@cphmedtech.dk',
+    note: 'Partnerships, sponsorships and general questions',
+    external: false,
+  },
+  {
+    icon: 'linkedin',
+    label: 'LinkedIn',
+    handle: 'Copenhagen MedTech',
+    href: 'https://www.linkedin.com/company/cph-medtech/',
+    note: 'Send us a message or follow our event updates',
+    external: true,
+  },
+  {
+    icon: 'instagram',
+    label: 'Instagram',
+    handle: '@cph_medtech',
+    href: 'https://www.instagram.com/cph_medtech/',
+    note: 'Send us a DM or see photos from our events',
+    external: true,
+  },
+];
+---
+
+<div class="contact-options">
+  <h2 class="contact-options__title">Write to Us</h2>
+  <p class="contact-options__intro">Send us an email, or a message on LinkedIn or Instagram.</p>
+  <ul class="contact-options__list">
+    {channels.map((channel) => (
+      <li>
+        <a
+          href={channel.href}
+          class="contact-options__link"
+          target={channel.external ? '_blank' : undefined}
+          rel={channel.external ? 'noopener noreferrer' : undefined}
+        >
+          <span class="contact-options__icon"><Icon name={channel.icon} size={22} /></span>
+          <span class="contact-options__text">
+            <span class="contact-options__label">{channel.label}</span>
+            <span class="contact-options__handle">{channel.handle}</span>
+            <span class="contact-options__note">{channel.note}</span>
+          </span>
+          <span class="contact-options__arrow">
+            <Icon name={channel.external ? 'external-link' : 'chevron-right'} size={16} />
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .contact-options {
+    background-color: $color-card;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    padding: 1.25rem;
+
+    @include respond-to($bp-sm) {
+      padding: 2rem;
+    }
+  }
+
+  .contact-options__title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-options__intro {
+    color: $color-muted-fg;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-options__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contact-options__link {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    transition: $transition-base;
+
+    @include respond-to($bp-sm) {
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+    }
+
+    &:hover {
+      border-color: $color-primary;
+      background-color: $color-surface;
+    }
+  }
+
+  .contact-options__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $radius-full;
+    background-color: rgba($color-primary, 0.1);
+    color: $color-primary;
+
+    @include respond-to($bp-sm) {
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+
+  .contact-options__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .contact-options__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: $color-muted-fg;
+  }
+
+  .contact-options__handle {
+    font-weight: 600;
+    color: $color-fg;
+    overflow-wrap: break-word;
+  }
+
+  .contact-options__note {
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+  }
+
+  .contact-options__arrow {
+    display: none;
+    flex-shrink: 0;
+    color: $color-primary;
+
+    @include respond-to($bp-sm) {
+      display: block;
+    }
+  }
+</style>
