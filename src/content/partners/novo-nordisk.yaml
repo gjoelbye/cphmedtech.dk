@@ -1,6 +1,5 @@
-name: "Novo Nordisk"
+name: "Novo"
 category: industry
-logo: "novo-nordisk-logo.webp"
+logo: "novo-logo.webp"
 sortOrder: 2
 website: "https://www.novonordisk.com"
-logoScale: 1.4

@@ -5,8 +5,7 @@ year: 2026
 description: "A full-day workshop at Rigshospitalet exploring innovation, medical technology, and digital solutions in healthcare. Featuring expert talks, a hospital tour, hands-on case work, and a networking dinner."
 type: workshop
 location: "Rigshospitalet"
-isFeatured: true
-isUpcoming: true
+isFeatured: false
 registrationUrl: "https://docs.google.com/forms/d/1wqoKElN6TLdvfi8SFJGzZQmT0FxiASGRZBPMcdjouQY/viewform"
 time: "Full day"
 price: "Free"

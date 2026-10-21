@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { toIsoDate } from '../../utils/event-dates';
 
 interface Props {
   title: string;
@@ -30,10 +31,11 @@ const typeLabels: Record<string, string> = {
 
 const signupUrl = registrationUrl || externalUrl;
 const useLink = pageUrl && !signupUrl;
+const eventDate = toIsoDate(sortDate);
 ---
 
 {useLink ? (
-  <a href={pageUrl} class="event-card card event-card--linked">
+  <a href={pageUrl} class="event-card card event-card--linked" data-event-date={eventDate}>
     <div class="event-card__date-badge">
       {day && <span class="event-card__day">{day}</span>}
       <span class="event-card__month">{month}</span>
@@ -56,7 +58,7 @@ const useLink = pageUrl && !signupUrl;
     </div>
   </a>
 ) : (
-  <div class="event-card card">
+  <div class="event-card card" data-event-date={eventDate}>
     <div class="event-card__date-badge">
       {day && <span class="event-card__day">{day}</span>}
       <span class="event-card__month">{month}</span>
@@ -91,3 +93,5 @@ const useLink = pageUrl && !signupUrl;
     </div>
   </div>
 )}
+
+<script src="../../scripts/event-status.ts"></script>

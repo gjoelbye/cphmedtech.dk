@@ -1,4 +1,6 @@
 ---
+import Icon from '../shared/Icon.astro';
+
 interface Props {
   title: string;
   date: string;
@@ -6,9 +8,10 @@ interface Props {
   side: 'left' | 'right';
   index: number;
   type?: string;
+  pageUrl?: string;
 }
 
-const { title, date, description, side, index, type } = Astro.props;
+const { title, date, description, side, index, type, pageUrl } = Astro.props;
 
 const typeLabels: Record<string, string> = {
   summit: 'Summit',
@@ -32,6 +35,11 @@ const typeLabels: Record<string, string> = {
       {type && <span class={`timeline-card__type timeline-card__type--${type}`}>{typeLabels[type] || type}</span>}
     </div>
     <p class="timeline-card__description">{description}</p>
+    {pageUrl && (
+      <a href={pageUrl} class="timeline-card__link link-arrow">
+        View event page <Icon name="chevron-right" size={14} />
+      </a>
+    )}
   </div>
 </div>
 
@@ -156,5 +164,10 @@ const typeLabels: Record<string, string> = {
     font-size: 0.875rem;
     color: $color-muted-fg;
     line-height: 1.6;
+  }
+
+  .timeline-card__link {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
   }
 </style>

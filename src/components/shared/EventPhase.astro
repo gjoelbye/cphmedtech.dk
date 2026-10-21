@@ -1,0 +1,18 @@
+---
+import { isEventUpcoming, toIsoDate } from '../../utils/event-dates';
+
+interface Props {
+  date: Date;
+  show: 'upcoming' | 'past';
+}
+
+const { date, show } = Astro.props;
+const eventDate = toIsoDate(date);
+const visible = (show === 'upcoming') === isEventUpcoming(eventDate);
+---
+
+<div data-event-phase={show} data-event-date={eventDate} hidden={!visible}>
+  <slot />
+</div>
+
+<script src="../../scripts/event-status.ts"></script>

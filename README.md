@@ -9,8 +9,10 @@ The official website for Copenhagen MedTech, a student organisation connecting s
 - [Astro](https://astro.build) v6 - static site generator
 - SCSS with BEM naming conventions
 - MDX for blog content
-- Cloudflare Pages for hosting
+- Cloudflare for hosting (Workers Builds, static assets from `dist/`)
 - GitHub Actions CI (lint, type check, build)
+
+Contributing, by hand or with an AI agent? Read [AGENTS.md](AGENTS.md) first.
 
 ## Getting Started
 
@@ -29,11 +31,12 @@ Requires Node.js >= 22.12.0.
 src/
 ├── pages/          # 15 route-based pages
 ├── layouts/        # BaseLayout, PageLayout
-├── components/     # Organized by feature (home, events, cmis2025, partners, contact, shared, layout)
+├── components/     # Organized by feature (home, events, summit, cmis2025, workshop, partners, contact, shared, layout)
 ├── styles/         # SCSS partials (tokens, reset, typography, animations, mixins, components)
 ├── content/        # YAML/MDX content collections (events, partners, speakers, team, blog)
 ├── assets/         # Images and logos (Astro image pipeline)
-└── scripts/        # Client-side JS (mobile menu, stat counter, timeline, network banner)
+├── utils/          # Shared helpers (event dates, logo lookup)
+└── scripts/        # Client-side JS (mobile menu, stat counter, timeline, network banner, event status)
 ```
 
 ## Adding Content
@@ -50,11 +53,14 @@ year: 2025
 description: "Description of the event."
 type: summit  # summit | hackathon | lecture | case-event | workshop | other
 location: "Venue Name"
-isUpcoming: true  # shows on homepage and /events/
 registrationUrl: "https://..."
 time: "15:00 - 21:00"
 price: "Free"
+pageUrl: "/events/event-page/"  # optional, the timeline links to it
+isFeatured: true  # optional, promotes the event in the home page hero (needs pageUrl)
 ```
+
+Events whose `sortDate` is today or later appear under Upcoming Events on the homepage and /events/ automatically. Once the date passes, sign-up buttons on event pages switch to a "took place" note, even before the next deploy.
 
 ### Add a partner
 Create a YAML file in `src/content/partners/` and add the logo (WebP, max 400px wide) to `src/assets/logos/`:

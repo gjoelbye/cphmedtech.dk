@@ -1,0 +1,135 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { getLogoSrc } from '../../utils/logos';
+
+interface Props {
+  eyebrow: string;
+  intro: string;
+  companies: CollectionEntry<'partners'>[];
+  collaborator?: CollectionEntry<'partners'>;
+}
+
+const { eyebrow, intro, companies, collaborator } = Astro.props;
+
+function withLogo(partner: CollectionEntry<'partners'>) {
+  const logo = getLogoSrc(partner.data.logo);
+  if (!logo) throw new Error(`Logo ${partner.data.logo} for ${partner.data.name} is missing from src/assets/logos/`);
+  return { name: partner.data.name, website: partner.data.website, logo };
+}
+
+const cards = companies.map(withLogo);
+const collab = collaborator && withLogo(collaborator);
+---
+
+<section class="companies section--surface">
+  <div class="companies__inner">
+    <p class="companies__eyebrow">{eyebrow}</p>
+    <h2>Meet This Year's Companies</h2>
+    <p class="companies__intro">{intro}</p>
+    <div class="companies__grid">
+      {cards.map((company) => (
+        <a href={company.website} target="_blank" rel="noopener noreferrer" class="companies__card card">
+          <div class="companies__logo">
+            <Image src={company.logo} alt="" />
+          </div>
+          <h3 class="companies__name">{company.name}</h3>
+        </a>
+      ))}
+    </div>
+    {collab && (
+      <a href={collab.website} target="_blank" rel="noopener noreferrer" class="companies__collab">
+        <span>In collaboration with</span>
+        <Image src={collab.logo} alt={collab.name} />
+      </a>
+    )}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .companies {
+    padding: 4rem 0;
+  }
+
+  .companies__inner {
+    @include container(72rem);
+    text-align: center;
+
+    h2 {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .companies__eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  .companies__intro {
+    color: $color-muted-fg;
+    max-width: 40rem;
+    margin: 0 auto 2.5rem;
+  }
+
+  .companies__grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 2.5rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .companies__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    border-top: 4px solid $color-primary;
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .companies__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4.5rem;
+    width: 100%;
+
+    img {
+      max-height: 100%;
+      max-width: 85%;
+      object-fit: contain;
+    }
+  }
+
+  .companies__name {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .companies__collab {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: $color-muted-fg;
+    font-size: 0.875rem;
+    text-decoration: none;
+
+    img {
+      height: 2.5rem;
+      width: auto;
+    }
+  }
+</style>

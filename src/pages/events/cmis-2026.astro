@@ -1,58 +1,216 @@
 ---
+import { getEntries, getEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/shared/Button.astro';
 import Icon from '../../components/shared/Icon.astro';
+import EventPhase from '../../components/shared/EventPhase.astro';
+import ContentSection from '../../components/shared/ContentSection.astro';
+import QuickInfoCards from '../../components/summit/QuickInfoCards.astro';
+import CompaniesSection from '../../components/summit/CompaniesSection.astro';
+import ScheduleSection from '../../components/summit/ScheduleSection.astro';
+import { isEventUpcoming } from '../../utils/event-dates';
+import crowd from '../../assets/images/crowd.jpg';
+import speaker from '../../assets/images/speaker.jpg';
+import speaker2 from '../../assets/images/speaker2.jpg';
+import crowd2 from '../../assets/images/crowd2.jpg';
+
+const event = await getEntry('events', '2026-11-cmis-2026');
+if (!event) throw new Error('Event 2026-11-cmis-2026 is missing from src/content/events/');
+
+const companies = await getEntries(event.data.companies ?? []);
+if (companies.some((company) => !company)) {
+  throw new Error('2026-11-cmis-2026.yaml lists a company that is missing from src/content/partners/');
+}
+const collaborator = event.data.collaborator && (await getEntry(event.data.collaborator));
+if (!collaborator) {
+  throw new Error('2026-11-cmis-2026.yaml needs a collaborator that exists in src/content/partners/');
+}
+const companyNames = new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' })
+  .format(companies.map((company) => company.data.name));
+
+const description = `MedTech Career Day with ${companyNames}, followed by an evening of talks, dinner and drinks.`;
+const ticketUrl = event.data.registrationUrl;
+const [priceAmount, priceCurrency] = event.data.price?.split(' ') ?? [];
+const offer = ticketUrl && priceAmount && priceCurrency && isEventUpcoming(event.data.sortDate)
+  ? {
+      "@type": "Offer",
+      "price": priceAmount,
+      "priceCurrency": priceCurrency,
+      "url": ticketUrl,
+      "availability": "https://schema.org/InStock"
+    }
+  : undefined;
+// A 1200px JPEG for search engines; reading crowd.src directly would ship the 2 MB original.
+const ldImage = await getImage({ src: crowd, width: 1200, format: 'jpg' });
+
+const quickInfo = [
+  { icon: 'calendar', title: event.data.date, subtitle: 'Save the date' },
+  { icon: 'map-pin', title: 'Niels K. Jerne Auditorium', subtitle: 'Panum, University of Copenhagen, Blegdamsvej 3B' },
+  { icon: 'clock', title: event.data.time ?? '', subtitle: 'Full afternoon & evening program' },
+];
+
+const schedule = [
+  {
+    title: 'MedTech Career Day',
+    time: '15:15 – 18:30',
+    detail: `With ${collaborator.data.name}, ${companyNames}`,
+    price: 'FREE',
+    free: true,
+    note: 'Open to all students',
+  },
+  {
+    title: 'Innovation Summit',
+    time: '18:30 – 20:45',
+    detail: 'Copenhagen MedTech Innovation Summit talks',
+    price: event.data.price ?? '',
+    note: 'Includes dinner and drinks',
+  },
+];
 ---
 
 <BaseLayout
   title="Copenhagen MedTech Innovation Summit 2026"
-  description="The Copenhagen MedTech Innovation Summit returns in Fall 2026. Details coming soon."
+  description={`The Copenhagen MedTech Innovation Summit 2026 is on ${event.data.date} at the Niels K. Jerne Auditorium, Panum, University of Copenhagen. ${description}`}
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Event",
       "name": "Copenhagen MedTech Innovation Summit 2026",
-      "startDate": "2026-09-01",
+      "description": description,
+      "image": [new URL(ldImage.src, Astro.site).href],
+      "startDate": "2026-11-18T15:15:00+01:00",
+      "endDate": "2026-11-18T20:45:00+01:00",
       "eventStatus": "https://schema.org/EventScheduled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "Niels K. Jerne Auditorium, Panum, University of Copenhagen",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Blegdamsvej 3B",
+          "postalCode": "2200",
+          "addressLocality": "Copenhagen N",
+          "addressCountry": "DK"
+        }
+      },
       "organizer": {
         "@type": "Organization",
         "name": "Copenhagen MedTech",
         "url": "https://cphmedtech.dk"
-      }
+      },
+      "offers": offer
     })} />
   </Fragment>
 
-  <section class="cmis-hero section--dark section">
+  <section class="cmis-hero">
     <div class="cmis-hero__inner">
-      <h1 class="cmis-hero__title">CMIS 2026</h1>
-      <p class="cmis-hero__subtitle">Copenhagen MedTech Innovation Summit</p>
-      <p class="cmis-hero__date">Fall 2026</p>
-      <p class="cmis-hero__status">Details coming soon</p>
-      <div class="cmis-hero__actions">
-        <Button href="https://www.linkedin.com/company/copenhagen-medtech/" variant="outline-light" size="lg">
-          Follow for Updates
-        </Button>
-        <Button href="/events/cmis-2025/" variant="outline-light" size="lg">
-          See CMIS 2025
-        </Button>
+      <h1>Copenhagen MedTech Innovation Summit 2026</h1>
+      <p class="cmis-hero__subtitle">
+        MedTech Career Day in the afternoon, followed by an evening of talks, dinner and drinks.
+      </p>
+      <div class="cmis-hero__cta">
+        {ticketUrl && (
+          <EventPhase date={event.data.sortDate} show="upcoming">
+            <Button href={ticketUrl} variant="primary" size="lg" premium external>
+              Sign Up Now
+            </Button>
+          </EventPhase>
+        )}
+        <EventPhase date={event.data.sortDate} show="past">
+          <p class="cmis-hero__past">This event took place on {event.data.date}.</p>
+          <a href="/events/" class="link-arrow">
+            See upcoming events <Icon name="chevron-right" size={16} />
+          </a>
+        </EventPhase>
       </div>
+      <QuickInfoCards cards={quickInfo} />
     </div>
   </section>
 
-  <section class="cmis-info section">
-    <div class="cmis-info__inner">
-      <h2>What is CMIS?</h2>
-      <p>
-        The Copenhagen MedTech Innovation Summit is our flagship annual event, uniting students, startups,
-        and industry leaders to explore the future of healthcare technology. Past editions have featured
-        international networking, inspiring talks, career opportunities, and hands-on workshops.
-      </p>
-      <a href="/timeline/" class="link-arrow">
-        Browse Past Events <Icon name="chevron-right" size={16} />
-      </a>
-    </div>
+  <CompaniesSection
+    eyebrow="MedTech Career Day 2026"
+    intro={`Talk directly with representatives from ${companyNames}, and explore your future career in MedTech.`}
+    companies={companies}
+    collaborator={collaborator}
+  />
+
+  <ContentSection
+    heading="Innovation Summit 2026"
+    imageSrc={crowd}
+    imageAlt="Summit attendees networking"
+  >
+    <p>
+      Our annual Innovation Summit, featuring MedTech Career Day, an opportunity for students to connect with the MedTech industry.
+    </p>
+    <p>
+      The evening will include inspiring talks and presentations, networking opportunities, dinner, and drinks.
+    </p>
+  </ContentSection>
+
+  <ContentSection
+    heading="Outstanding Lineup of Industry Experts"
+    imageSrc={speaker}
+    imageAlt="Speaker presenting at the summit"
+    reversed
+    muted
+  >
+    <p>
+      The program features industry speakers sharing their insights and experiences.
+    </p>
+    <p>
+      Participants get to meet professionals and startups working in MedTech.
+    </p>
+  </ContentSection>
+
+  <ContentSection
+    heading="MedTech Career Day"
+    subtitle={`In Collaboration with ${collaborator.data.name}`}
+    imageSrc={speaker2}
+    imageAlt="MedTech Career Day session"
+  >
+    <p>
+      In collaboration with {collaborator.data.name} and their partners, the event opens with a dedicated
+      MedTech Career Day, featuring {companyNames}.
+    </p>
+    <p>
+      This segment gives students valuable opportunities to engage directly with industry representatives
+      and explore future career paths.
+    </p>
+  </ContentSection>
+
+  <ContentSection
+    heading="Connect and Learn"
+    imageSrc={crowd2}
+    imageAlt="Attendees connecting at the event"
+    reversed
+    muted
+  >
+    <p>
+      The Innovation Summit and MedTech Career Day are about making real connections.
+    </p>
+    <p>
+      This event offers a space to learn, network, and collaborate with fellow students and professionals in MedTech.
+    </p>
+  </ContentSection>
+
+  <ScheduleSection
+    items={schedule}
+    disclaimer="Participation in MedTech Career Day is free, but a ticket is required for the Innovation Summit. The fee ensures attendance commitment."
+    eventDate={event.data.sortDate}
+    ticketUrl={ticketUrl}
+  />
+
+  <section class="cmis-footer">
+    <p>
+      You can find the event on LinkedIn
+      <a href="https://www.linkedin.com/company/cph-medtech/posts/" target="_blank" rel="noopener noreferrer" class="link-elegant">here</a>.
+    </p>
+    <p>
+      Curious about last year?
+      <a href="/events/cmis-2025/" class="link-elegant">See CMIS 2025</a>.
+    </p>
   </section>
 </BaseLayout>
 
@@ -60,53 +218,53 @@ import Icon from '../../components/shared/Icon.astro';
   @use '../../styles/tokens' as *;
   @use '../../styles/mixins' as *;
 
-  .cmis-hero__inner {
-    @include container($container-narrow);
-    text-align: center;
-    padding-top: 4rem;
-    padding-bottom: 2rem;
+  .cmis-hero {
+    padding: 5rem 0 3rem;
   }
 
-  .cmis-hero__title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    letter-spacing: $letter-spacing-display;
-    margin-bottom: 0.5rem;
+  .cmis-hero__inner {
+    @include container(72rem);
+    text-align: center;
 
-    @include respond-to($bp-md) { font-size: 4.5rem; }
+    h1 {
+      font-size: 2.5rem;
+
+      @include respond-to($bp-md) {
+        font-size: 3.75rem;
+      }
+    }
   }
 
   .cmis-hero__subtitle {
-    font-size: 1.25rem;
-    color: $color-overlay-text-muted;
-    margin-bottom: 1.5rem;
+    color: $color-muted-fg;
+    max-width: 36rem;
+    margin: 1rem auto 2rem;
   }
 
-  .cmis-hero__date {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: $color-overlay-text;
-    margin-bottom: 0.5rem;
+  .cmis-hero__cta {
+    margin-bottom: 3rem;
+
+    @include respond-to($bp-md) {
+      margin-bottom: 4rem;
+    }
   }
 
-  .cmis-hero__status {
-    font-size: 1.125rem;
-    color: $color-overlay-text-muted;
-    margin-bottom: 2.5rem;
+  .cmis-hero__past {
+    color: $color-muted-fg;
+    margin-bottom: 0.75rem;
   }
 
-  .cmis-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  .cmis-info__inner {
-    @include container($container-narrow);
+  .cmis-footer {
+    padding: 3rem 0;
     text-align: center;
+    @include container;
 
-    h2 { margin-bottom: 1.25rem; }
-    p { color: $color-fg-muted; line-height: 1.75; margin-bottom: 1.5rem; }
+    p {
+      color: $color-muted-fg;
+    }
+
+    p + p {
+      margin-top: 0.5rem;
+    }
   }
 </style>

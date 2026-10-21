@@ -3,10 +3,11 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { getCollection } from 'astro:content';
 import EventCard from '../../components/shared/EventCard.astro';
 import Button from '../../components/shared/Button.astro';
+import { isEventUpcoming } from '../../utils/event-dates';
 
 const allEvents = await getCollection('events');
 const upcoming = allEvents
-  .filter((e) => e.data.isUpcoming)
+  .filter((e) => isEventUpcoming(e.data.sortDate))
   .sort((a, b) => new Date(a.data.sortDate).getTime() - new Date(b.data.sortDate).getTime());
 
 const hasUpcoming = upcoming.length > 0;
@@ -24,28 +25,25 @@ const hasUpcoming = upcoming.length > 0;
 
     <section class="events-upcoming">
       <h2>Upcoming Events</h2>
-      {hasUpcoming ? (
-        <div class="events-upcoming__grid">
-          {upcoming.map((event) => (
-            <EventCard
-              title={event.data.title}
-              date={event.data.date}
-              sortDate={new Date(event.data.sortDate)}
-              location={event.data.location}
-              time={event.data.time}
-              type={event.data.type}
-              registrationUrl={event.data.registrationUrl}
-              externalUrl={event.data.externalUrl}
-              pageUrl={event.data.pageUrl}
-            />
-          ))}
-        </div>
-      ) : (
-        <div class="events-upcoming__empty">
-          <p>New events coming soon.</p>
-          <p>Follow us on social media to be the first to know.</p>
-        </div>
-      )}
+      <div class="events-upcoming__grid" data-upcoming-list hidden={!hasUpcoming}>
+        {upcoming.map((event) => (
+          <EventCard
+            title={event.data.title}
+            date={event.data.date}
+            sortDate={new Date(event.data.sortDate)}
+            location={event.data.location}
+            time={event.data.time}
+            type={event.data.type}
+            registrationUrl={event.data.registrationUrl}
+            externalUrl={event.data.externalUrl}
+            pageUrl={event.data.pageUrl}
+          />
+        ))}
+      </div>
+      <div class="events-upcoming__empty" data-upcoming-empty hidden={hasUpcoming}>
+        <p>New events coming soon.</p>
+        <p>Follow us on social media to be the first to know.</p>
+      </div>
     </section>
 
     <section class="events-archive-link">

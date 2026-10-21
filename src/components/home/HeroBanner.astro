@@ -1,5 +1,13 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import Button from '../shared/Button.astro';
+import HeroEventPromo from './HeroEventPromo.astro';
+
+interface Props {
+  featuredEvent?: CollectionEntry<'events'>;
+}
+
+const { featuredEvent } = Astro.props;
 ---
 
 <section class="hero-banner">
@@ -8,6 +16,11 @@ import Button from '../shared/Button.astro';
       <h1 class="hero-banner__title animate-fade-up">
         Shaping the Future<br />of <span style="color: #284f77;">MedTech</span>
       </h1>
+      {featuredEvent && (
+        <div class="hero-banner__promo animate-fade-up animate-delay-4">
+          <HeroEventPromo event={featuredEvent} />
+        </div>
+      )}
     </div>
     <div class="hero-banner__info animate-fade-up animate-delay-2">
       <p class="hero-banner__subtitle">
@@ -113,6 +126,27 @@ import Button from '../shared/Button.astro';
 
     @include respond-to($bp-lg) {
       font-size: 4.25rem;
+    }
+  }
+
+  .hero-banner__headline {
+    position: relative;
+  }
+
+  // In the flow by default. On wide screens it floats under the headline, left of
+  // the logo, so the hero layout and canvas height don't change. The logo grows with
+  // viewport height, so tall screens keep the in-flow layout to avoid covering it.
+  .hero-banner__promo {
+    max-width: 21rem;
+    margin-top: 1.5rem;
+    pointer-events: auto;
+
+    @media (min-width: $bp-xl) and (max-height: 960px), (min-width: $bp-2xl) and (max-height: 1100px) {
+      position: absolute;
+      top: calc(100% + 2rem);
+      left: 0;
+      width: 21rem;
+      margin-top: 0;
     }
   }
 

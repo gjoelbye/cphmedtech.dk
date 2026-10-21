@@ -11,13 +11,20 @@ import BenefitItem from '../components/shared/BenefitItem.astro';
 import PartnerLogo from '../components/partners/PartnerLogo.astro';
 import { Image } from 'astro:assets';
 import crowdImg from '../assets/images/crowd.jpg';
+import { isEventUpcoming } from '../utils/event-dates';
+import { getLogoSrc } from '../utils/logos';
 
 // Upcoming events
 const allEvents = await getCollection('events');
 const upcoming = allEvents
-  .filter((e) => e.data.isUpcoming)
+  .filter((e) => isEventUpcoming(e.data.sortDate))
   .sort((a, b) => new Date(a.data.sortDate).getTime() - new Date(b.data.sortDate).getTime())
   .slice(0, 3);
+
+// Next featured event with its own page, promoted in the hero
+const featuredEvent = allEvents
+  .filter((e) => e.data.isFeatured && e.data.pageUrl && isEventUpcoming(e.data.sortDate))
+  .sort((a, b) => new Date(a.data.sortDate).getTime() - new Date(b.data.sortDate).getTime())[0];
 
 // Blog preview
 const allPosts = await getCollection('blog');
@@ -28,12 +35,6 @@ const latestPosts = allPosts
 // Partners
 const allPartners = await getCollection('partners');
 const partners = allPartners.sort((a, b) => a.data.sortOrder - b.data.sortOrder);
-const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*', { eager: true });
-
-function getLogoSrc(filename: string): ImageMetadata | undefined {
-  const key = Object.keys(logoModules).find((k) => k.endsWith(`/${filename}`));
-  return key ? logoModules[key].default : undefined;
-}
 ---
 
 <BaseLayout
@@ -49,7 +50,7 @@ function getLogoSrc(filename: string): ImageMetadata | undefined {
       "description": "A student organisation connecting students and stakeholders in the MedTech industry.",
       "email": "hello@cphmedtech.dk",
       "sameAs": [
-        "https://www.linkedin.com/company/copenhagen-medtech/",
+        "https://www.linkedin.com/company/cph-medtech/",
         "https://www.instagram.com/cph_medtech/",
         "https://www.facebook.com/p/Copenhagen-MedTech-100083403373733/"
       ]
@@ -57,7 +58,7 @@ function getLogoSrc(filename: string): ImageMetadata | undefined {
   </Fragment>
 
   <!-- 1. Hero with animated network banner -->
-  <HeroBanner />
+  <HeroBanner featuredEvent={featuredEvent} />
 
   <!-- 2. Impact stats -->
   <StatsBar />
@@ -95,25 +96,24 @@ function getLogoSrc(filename: string): ImageMetadata | undefined {
   <section class="upcoming section section--surface">
     <div class="upcoming__inner">
       <h2>Upcoming Events</h2>
-      {upcoming.length > 0 ? (
-        <div class="upcoming__grid">
-          {upcoming.map((event) => (
-            <EventCard
-              title={event.data.title}
-              date={event.data.date}
-              sortDate={new Date(event.data.sortDate)}
-              location={event.data.location}
-              time={event.data.time}
-              type={event.data.type}
-              registrationUrl={event.data.registrationUrl}
-              externalUrl={event.data.externalUrl}
-              pageUrl={event.data.pageUrl}
-            />
-          ))}
-        </div>
-      ) : (
-        <p class="upcoming__empty">New events coming soon. Follow us on social media to stay updated.</p>
-      )}
+      <div class="upcoming__grid" data-upcoming-list hidden={upcoming.length === 0}>
+        {upcoming.map((event) => (
+          <EventCard
+            title={event.data.title}
+            date={event.data.date}
+            sortDate={new Date(event.data.sortDate)}
+            location={event.data.location}
+            time={event.data.time}
+            type={event.data.type}
+            registrationUrl={event.data.registrationUrl}
+            externalUrl={event.data.externalUrl}
+            pageUrl={event.data.pageUrl}
+          />
+        ))}
+      </div>
+      <p class="upcoming__empty" data-upcoming-empty hidden={upcoming.length > 0}>
+        New events coming soon. Follow us on social media to stay updated.
+      </p>
       <div class="upcoming__cta">
         <Button href="/events/" variant="outline">See All Events</Button>
       </div>

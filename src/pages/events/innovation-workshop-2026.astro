@@ -1,10 +1,19 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/shared/Button.astro';
 import Icon from '../../components/shared/Icon.astro';
+import EventPhase from '../../components/shared/EventPhase.astro';
 import ProgramCards from '../../components/workshop/ProgramCards.astro';
-import ContentSection from '../../components/cmis2025/ContentSection.astro';
+import ContentSection from '../../components/shared/ContentSection.astro';
+import { isEventUpcoming } from '../../utils/event-dates';
 import crowdImg from '../../assets/images/crowd.jpg';
+
+const event = await getEntry('events', '2026-06-innovation-workshop');
+if (!event) throw new Error('Event 2026-06-innovation-workshop is missing from src/content/events/');
+
+const signupUrl = event.data.registrationUrl;
+const isUpcoming = isEventUpcoming(event.data.sortDate);
 ---
 
 <BaseLayout
@@ -44,12 +53,12 @@ import crowdImg from '../../assets/images/crowd.jpg';
         }
       ],
       "isAccessibleForFree": true,
-      "offers": {
+      "offers": isUpcoming ? {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "DKK",
         "availability": "https://schema.org/LimitedAvailability"
-      }
+      } : undefined
     })} />
   </Fragment>
 
@@ -62,10 +71,15 @@ import crowdImg from '../../assets/images/crowd.jpg';
         A full-day workshop exploring innovation, medical technology, and digital solutions in healthcare.
       </p>
       <p class="workshop-hero__date">June 4, 2026 // Rigshospitalet, Copenhagen</p>
-      <Button href="https://docs.google.com/forms/d/1wqoKElN6TLdvfi8SFJGzZQmT0FxiASGRZBPMcdjouQY/viewform" variant="primary" size="lg" premium>
-        Sign Up
-      </Button>
-      <p class="workshop-hero__deadline">Free admission. Limited spots. Apply before May 24.</p>
+      <EventPhase date={event.data.sortDate} show="upcoming">
+        <Button href={signupUrl} variant="primary" size="lg" premium external>
+          Sign Up
+        </Button>
+        <p class="workshop-hero__deadline">Free admission. Limited spots. Apply before May 24.</p>
+      </EventPhase>
+      <EventPhase date={event.data.sortDate} show="past">
+        <p class="workshop-hero__past">This workshop took place on {event.data.date}.</p>
+      </EventPhase>
     </div>
   </section>
 
@@ -134,11 +148,20 @@ import crowdImg from '../../assets/images/crowd.jpg';
   <!-- CTA -->
   <section class="workshop-cta section--dark section">
     <div class="workshop-cta__inner">
-      <h2>Ready to explore healthcare innovation?</h2>
-      <p>Apply before May 24 to secure your spot. Admission is free.</p>
-      <Button href="https://docs.google.com/forms/d/1wqoKElN6TLdvfi8SFJGzZQmT0FxiASGRZBPMcdjouQY/viewform" variant="outline-light" size="lg" premium>
-        Sign Up
-      </Button>
+      <EventPhase date={event.data.sortDate} show="upcoming">
+        <h2>Ready to explore healthcare innovation?</h2>
+        <p class="workshop-cta__text">Apply before May 24 to secure your spot. Admission is free.</p>
+        <Button href={signupUrl} variant="outline-light" size="lg" premium external>
+          Sign Up
+        </Button>
+      </EventPhase>
+      <EventPhase date={event.data.sortDate} show="past">
+        <h2>Want to join the next one?</h2>
+        <p class="workshop-cta__text">See what's coming up at Copenhagen MedTech.</p>
+        <Button href="/events/" variant="outline-light" size="lg" premium>
+          Upcoming Events
+        </Button>
+      </EventPhase>
       <p class="workshop-cta__contact">
         Questions? Reach out at <a href="mailto:hello@cphmedtech.dk">hello@cphmedtech.dk</a>
       </p>
@@ -210,6 +233,11 @@ import crowdImg from '../../assets/images/crowd.jpg';
     font-size: 0.9375rem;
     color: $color-overlay-text-muted;
     margin-top: 1.5rem;
+  }
+
+  .workshop-hero__past {
+    font-size: 1.125rem;
+    color: $color-overlay-text-muted;
   }
 
   // Quick Info
@@ -301,12 +329,12 @@ import crowdImg from '../../assets/images/crowd.jpg';
   .workshop-cta__inner {
     @include container($container-narrow);
     text-align: center;
+  }
 
-    > p {
-      color: $color-overlay-text-muted;
-      margin-bottom: 2rem;
-      font-size: 1.125rem;
-    }
+  .workshop-cta__text {
+    color: $color-overlay-text-muted;
+    margin-bottom: 2rem;
+    font-size: 1.125rem;
   }
 
   .workshop-cta__contact {

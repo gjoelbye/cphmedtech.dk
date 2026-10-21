@@ -1,14 +1,44 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/shared/Button.astro';
-import QuickInfoCards from '../../components/cmis2025/QuickInfoCards.astro';
-import ContentSection from '../../components/cmis2025/ContentSection.astro';
+import Icon from '../../components/shared/Icon.astro';
+import EventPhase from '../../components/shared/EventPhase.astro';
+import ContentSection from '../../components/shared/ContentSection.astro';
+import QuickInfoCards from '../../components/summit/QuickInfoCards.astro';
+import ScheduleSection from '../../components/summit/ScheduleSection.astro';
 import SpeakersSection from '../../components/cmis2025/SpeakersSection.astro';
-import ScheduleSection from '../../components/cmis2025/ScheduleSection.astro';
 import crowd from '../../assets/images/crowd.jpg';
 import speaker from '../../assets/images/speaker.jpg';
 import speaker2 from '../../assets/images/speaker2.jpg';
 import crowd2 from '../../assets/images/crowd2.jpg';
+
+const event = await getEntry('events', '2025-11-cmis-2025');
+if (!event) throw new Error('Event 2025-11-cmis-2025 is missing from src/content/events/');
+
+const quickInfo = [
+  { icon: 'calendar', title: 'November 18th, 2025', subtitle: 'Save the date' },
+  { icon: 'map-pin', title: 'Panum, University of Copenhagen', subtitle: 'Blegdamsvej 3B, 2200 Copenhagen N' },
+  { icon: 'clock', title: '15:00 – 21:00', subtitle: 'Full evening program' },
+];
+
+const schedule = [
+  {
+    title: 'MedTech Careers',
+    time: '15:00 – 17:30',
+    detail: 'With Medicoindustrien Companies (e.g., Novo Nordisk)',
+    price: 'FREE',
+    free: true,
+    note: 'Open to all students',
+  },
+  {
+    title: 'Innovation Summit',
+    time: '17:45 – 21:00',
+    detail: 'Copenhagen MedTech Innovation Summit talks',
+    price: '29 DKK',
+    note: 'Includes dinner and beverages',
+  },
+];
 ---
 
 <BaseLayout
@@ -50,11 +80,21 @@ import crowd2 from '../../assets/images/crowd2.jpg';
         An event exploring the intersection of artificial intelligence, medicine, and technology.
       </p>
       <div class="cmis-hero__cta">
-        <Button href="https://lnkd.in/dskPYDDM" variant="primary" size="lg" premium external>
-          Sign Up Now
-        </Button>
+        {event.data.registrationUrl && (
+          <EventPhase date={event.data.sortDate} show="upcoming">
+            <Button href={event.data.registrationUrl} variant="primary" size="lg" premium external>
+              Sign Up Now
+            </Button>
+          </EventPhase>
+        )}
+        <EventPhase date={event.data.sortDate} show="past">
+          <p class="cmis-hero__past">This event took place on {event.data.date}.</p>
+          <a href="/events/cmis-2026/" class="link-arrow">
+            See CMIS 2026 <Icon name="chevron-right" size={16} />
+          </a>
+        </EventPhase>
       </div>
-      <QuickInfoCards />
+      <QuickInfoCards cards={quickInfo} />
     </div>
   </section>
 
@@ -118,12 +158,17 @@ import crowd2 from '../../assets/images/crowd2.jpg';
   </ContentSection>
 
   <SpeakersSection />
-  <ScheduleSection />
+  <ScheduleSection
+    items={schedule}
+    disclaimer="Participation in MedTech Careers is free, but a ticket is required for the Innovation Summit. The fee ensures attendance commitment."
+    eventDate={event.data.sortDate}
+    ticketUrl={event.data.registrationUrl}
+  />
 
   <section class="cmis-footer">
     <p>
       You can find the event on LinkedIn
-      <a href="https://www.linkedin.com/company/copenhagen-medtech/" target="_blank" rel="noopener noreferrer" class="link-elegant">here</a>.
+      <a href="https://www.linkedin.com/company/cph-medtech/" target="_blank" rel="noopener noreferrer" class="link-elegant">here</a>.
     </p>
   </section>
 </BaseLayout>
@@ -161,6 +206,11 @@ import crowd2 from '../../assets/images/crowd2.jpg';
     @include respond-to($bp-md) {
       margin-bottom: 4rem;
     }
+  }
+
+  .cmis-hero__past {
+    color: $color-muted-fg;
+    margin-bottom: 0.75rem;
   }
 
   .cmis-footer {

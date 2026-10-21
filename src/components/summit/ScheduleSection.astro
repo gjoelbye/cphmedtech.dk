@@ -1,35 +1,52 @@
 ---
 import Button from '../shared/Button.astro';
+import EventPhase from '../shared/EventPhase.astro';
+
+interface ScheduleItem {
+  title: string;
+  time: string;
+  detail: string;
+  price: string;
+  free?: boolean;
+  note: string;
+}
+
+interface Props {
+  items: ScheduleItem[];
+  disclaimer: string;
+  eventDate: Date;
+  ticketUrl?: string;
+}
+
+const { items, disclaimer, eventDate, ticketUrl } = Astro.props;
 ---
 
-<section class="schedule">
+<section class="schedule section--surface">
   <div class="schedule__inner">
     <h2>Event Schedule</h2>
     <div class="schedule__grid">
-      <div class="schedule__card">
-        <h3>MedTech Careers</h3>
-        <p class="schedule__time">15:00 – 17:30</p>
-        <p class="schedule__detail">With Medicoindustrien Companies (e.g., Novo Nordisk)</p>
-        <div class="schedule__price schedule__price--free">FREE</div>
-        <p class="schedule__note">Open to all students</p>
-      </div>
-      <div class="schedule__card">
-        <h3>Innovation Summit</h3>
-        <p class="schedule__time">17:45 – 21:00</p>
-        <p class="schedule__detail">Copenhagen MedTech Innovation Summit talks</p>
-        <div class="schedule__price schedule__price--paid">29 DKK</div>
-        <p class="schedule__note">Includes dinner and beverages</p>
-      </div>
+      {items.map((item) => (
+        <div class="schedule__card">
+          <h3>{item.title}</h3>
+          <p class="schedule__time">{item.time}</p>
+          <p class="schedule__detail">{item.detail}</p>
+          <div class:list={['schedule__price', item.free ? 'schedule__price--free' : 'schedule__price--paid']}>
+            {item.price}
+          </div>
+          <p class="schedule__note">{item.note}</p>
+        </div>
+      ))}
     </div>
-    <p class="schedule__disclaimer">
-      Participation in MedTech Careers is free, but a ticket is required for the Innovation Summit.
-      The fee ensures attendance commitment.
-    </p>
-    <div class="schedule__cta">
-      <Button href="https://lnkd.in/dskPYDDM" variant="primary" size="lg" premium external>
-        Get Your Ticket
-      </Button>
-    </div>
+    <p class="schedule__disclaimer">{disclaimer}</p>
+    {ticketUrl && (
+      <EventPhase date={eventDate} show="upcoming">
+        <div class="schedule__cta">
+          <Button href={ticketUrl} variant="primary" size="lg" premium external>
+            Get Your Ticket
+          </Button>
+        </div>
+      </EventPhase>
+    )}
   </div>
 </section>
 
@@ -39,7 +56,6 @@ import Button from '../shared/Button.astro';
 
   .schedule {
     padding: 4rem 0;
-    background-color: rgba($color-primary, 0.05);
   }
 
   .schedule__inner {

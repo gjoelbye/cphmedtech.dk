@@ -4,15 +4,9 @@ import { getCollection } from 'astro:content';
 import Icon from '../components/shared/Icon.astro';
 import Button from '../components/shared/Button.astro';
 import PartnerCategory from '../components/partners/PartnerCategory.astro';
+import { getLogoSrc } from '../utils/logos';
 
 const allPartners = await getCollection('partners');
-
-const logoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*', { eager: true });
-
-function getLogoSrc(filename: string): ImageMetadata | undefined {
-  const key = Object.keys(logoModules).find((k) => k.endsWith(`/${filename}`));
-  return key ? logoModules[key].default : undefined;
-}
 
 function getPartnersForCategory(category: string) {
   return allPartners
