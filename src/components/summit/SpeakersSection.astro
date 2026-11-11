@@ -74,7 +74,8 @@ const cards = speakers.map((speaker) => ({ ...speaker.data, photoSrc: getPhoto(s
     gap: 1.5rem;
 
     @include respond-to($bp-md) {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 22rem));
+      justify-content: center;
     }
   }
 
