@@ -1,5 +1,5 @@
 ---
-import { getEntries, getEntry } from 'astro:content';
+import { getCollection, getEntries, getEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/shared/Button.astro';
@@ -9,6 +9,9 @@ import ContentSection from '../../components/shared/ContentSection.astro';
 import QuickInfoCards from '../../components/summit/QuickInfoCards.astro';
 import CompaniesSection from '../../components/summit/CompaniesSection.astro';
 import ScheduleSection from '../../components/summit/ScheduleSection.astro';
+import SpeakersSection from '../../components/summit/SpeakersSection.astro';
+import PanelSection from '../../components/summit/PanelSection.astro';
+import ResearchGroupsSection from '../../components/summit/ResearchGroupsSection.astro';
 import { isEventUpcoming } from '../../utils/event-dates';
 import crowd from '../../assets/images/crowd.jpg';
 import speaker from '../../assets/images/speaker.jpg';
@@ -26,8 +29,15 @@ const collaborator = event.data.collaborator && (await getEntry(event.data.colla
 if (!collaborator) {
   throw new Error('2026-11-cmis-2026.yaml needs a collaborator that exists in src/content/partners/');
 }
-const companyNames = new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' })
-  .format(companies.map((company) => company.data.name));
+const listFormat = new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' });
+const companyNames = listFormat.format(companies.map((company) => company.data.name));
+const researchGroups = event.data.researchGroups ?? [];
+
+const people = (await getCollection('speakers', ({ data }) => data.event === 'cmis-2026'))
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+const speakers = people.filter((p) => p.data.role === 'speaker');
+const panelists = people.filter((p) => p.data.role === 'panelist');
+const panelOrgs = listFormat.format(panelists.map((p) => p.data.organization));
 
 const description = `MedTech Career Day with ${companyNames}, followed by an evening of talks, dinner and drinks.`;
 const ticketUrl = event.data.registrationUrl;
@@ -54,7 +64,7 @@ const schedule = [
   {
     title: 'MedTech Career Day',
     time: '15:15 – 18:30',
-    detail: `With ${collaborator.data.name}, ${companyNames}`,
+    detail: `With ${collaborator.data.name}, ${companyNames}${researchGroups.length > 0 ? ', and research groups from DTU' : ''}`,
     price: 'FREE',
     free: true,
     note: 'Open to all students',
@@ -62,7 +72,7 @@ const schedule = [
   {
     title: 'Innovation Summit',
     time: '18:30 – 20:45',
-    detail: 'Copenhagen MedTech Innovation Summit talks',
+    detail: panelists.length > 0 ? 'Talks and an industry panel discussion' : 'Copenhagen MedTech Innovation Summit talks',
     price: event.data.price ?? '',
     note: 'Includes dinner and drinks',
   },
@@ -131,10 +141,27 @@ const schedule = [
 
   <CompaniesSection
     eyebrow="MedTech Career Day 2026"
-    intro={`Talk directly with representatives from ${companyNames}, and explore your future career in MedTech.`}
+    intro={`Talk directly with representatives from ${companyNames}, meet research groups from DTU, and explore your future career in MedTech.`}
     companies={companies}
     collaborator={collaborator}
   />
+
+  {speakers.length > 0 && <SpeakersSection eyebrow="Innovation Summit 2026" speakers={speakers} />}
+
+  {panelists.length > 0 && (
+    <PanelSection
+      intro={`Hear from ${panelOrgs} on innovation and careers in MedTech.`}
+      panelists={panelists}
+    />
+  )}
+
+  {researchGroups.length > 0 && (
+    <ResearchGroupsSection
+      eyebrow="MedTech Career Day 2026"
+      intro="Meet researchers from DTU at the Career Day and hear about their work."
+      groups={researchGroups}
+    />
+  )}
 
   <ContentSection
     heading="Innovation Summit 2026"
@@ -157,7 +184,8 @@ const schedule = [
     muted
   >
     <p>
-      The program features industry speakers sharing their insights and experiences.
+      The program features talks from {listFormat.format(speakers.map((s) => s.data.name))}, followed by
+      a panel discussion with {panelOrgs}.
     </p>
     <p>
       Participants get to meet professionals and startups working in MedTech.
@@ -172,7 +200,8 @@ const schedule = [
   >
     <p>
       In collaboration with {collaborator.data.name} and their partners, the event opens with a dedicated
-      MedTech Career Day, featuring {companyNames}.
+      MedTech Career Day, featuring {companyNames}, as well as research groups from DTU Health Tech
+      and DTU Bioengineering.
     </p>
     <p>
       This segment gives students valuable opportunities to engage directly with industry representatives

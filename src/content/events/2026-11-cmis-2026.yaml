@@ -16,3 +16,16 @@ companies:
   - ferrosan-medical-devices
   - novo-nordisk
 collaborator: medicoindustrien
+researchGroups:
+  - name: "Optomechanical Biointerfaces"
+    department: "DTU Health Tech"
+    leader: "Massimo De Vittorio"
+    description: "Develops implantable, wearable and ingestible devices that monitor and control behaviour and health, from brain probes that record and stimulate neural activity to piezoelectric patches that track heart rate and breathing."
+    logo: "dtu-logo.webp"
+    website: "https://www.healthtech.dtu.dk/research/research-sections/section-idun/group-optomechanical-biointerfaces"
+  - name: "Nano Bio Integrated Systems (NaBIS)"
+    department: "DTU Bioengineering"
+    leader: "Winnie Edith Svendsen"
+    description: "Designs micro- and nanosensors and builds them into portable systems for biological analysis where the sample is taken, such as monitoring disease biomarkers, bacteria cultures and environmental pollutants."
+    logo: "dtu-logo.webp"
+    website: "https://www.bioengineering.dtu.dk/research/research-sections/section-for-medical-biotechnology/nabis"
