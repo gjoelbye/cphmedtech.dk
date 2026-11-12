@@ -1,0 +1,127 @@
+---
+import { getEntry, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { getLogoSrc } from '../../utils/logos';
+
+interface Props {
+  intro: string;
+  panelists: CollectionEntry<'speakers'>[];
+}
+
+const { intro, panelists } = Astro.props;
+
+const cards = await Promise.all(
+  panelists.map(async (panelist) => {
+    const partner = panelist.data.partner && (await getEntry(panelist.data.partner));
+    if (panelist.data.partner && !partner) {
+      throw new Error(`Panelist ${panelist.data.name} lists a partner that is missing from src/content/partners/`);
+    }
+    const logo = partner ? getLogoSrc(partner.data.logo) : undefined;
+    return { ...panelist.data, logo };
+  }),
+);
+---
+
+<section class="panel section--surface">
+  <div class="panel__inner">
+    <p class="panel__eyebrow">Industry Panel</p>
+    <h2>Panel Discussion</h2>
+    <p class="panel__intro">{intro}</p>
+    <div class="panel__grid">
+      {cards.map((panelist) => (
+        <article class="panel__card card">
+          {panelist.logo && (
+            <div class="panel__logo">
+              <Image src={panelist.logo} alt="" />
+            </div>
+          )}
+          <h3 class="panel__name">{panelist.name}</h3>
+          <p class="panel__role">{panelist.title}</p>
+          <p class="panel__company">{panelist.organization}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/tokens' as *;
+  @use '../../styles/mixins' as *;
+
+  .panel {
+    padding: 4rem 0;
+  }
+
+  .panel__inner {
+    @include container(72rem);
+    text-align: center;
+
+    h2 {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .panel__eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  .panel__intro {
+    color: $color-muted-fg;
+    max-width: 40rem;
+    margin: 0 auto 2.5rem;
+  }
+
+  .panel__grid {
+    display: grid;
+    gap: 1.5rem;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .panel__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 4px solid $color-primary;
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  .panel__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.5rem;
+    width: 100%;
+    margin-bottom: 1.25rem;
+
+    img {
+      max-height: 100%;
+      max-width: 70%;
+      object-fit: contain;
+    }
+  }
+
+  .panel__name {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .panel__role {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-primary;
+  }
+
+  .panel__company {
+    font-size: 0.875rem;
+    color: $color-muted-fg;
+    margin-top: 0.25rem;
+  }
+</style>

@@ -23,6 +23,14 @@ const events = defineCollection({
     pageUrl: z.string().optional(),
     companies: z.array(reference('partners')).optional(),
     collaborator: reference('partners').optional(),
+    researchGroups: z.array(z.object({
+      name: z.string(),
+      department: z.string(),
+      leader: z.string(),
+      description: z.string(),
+      logo: z.string(),
+      website: z.string().url(),
+    })).optional(),
   }),
 });
 
@@ -47,6 +55,8 @@ const speakers = defineCollection({
     event: z.string(),
     photo: z.string().optional(),
     bio: z.string().optional(),
+    role: z.enum(['speaker', 'panelist']).default('speaker'),
+    partner: reference('partners').optional(),
     sortOrder: z.number().default(0),
   }),
 });
