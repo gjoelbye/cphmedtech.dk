@@ -16,12 +16,14 @@ interface Props {
   disclaimer: string;
   eventDate: Date;
   ticketUrl?: string;
+  /** Drop the light blue background, e.g. when the next section already has it. */
+  plain?: boolean;
 }
 
-const { items, disclaimer, eventDate, ticketUrl } = Astro.props;
+const { items, disclaimer, eventDate, ticketUrl, plain = false } = Astro.props;
 ---
 
-<section class="schedule section--surface">
+<section class:list={['schedule', { 'section--surface': !plain }]}>
   <div class="schedule__inner">
     <h2>Event Schedule</h2>
     <div class="schedule__grid">
