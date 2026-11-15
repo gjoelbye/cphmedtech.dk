@@ -76,7 +76,7 @@ const schedule = [
     detail: `With ${collaborator.data.name}, ${companyNames}${researchGroups.length > 0 ? `, and research groups from ${researchDepartments}` : ''}`,
     price: 'FREE',
     free: true,
-    note: 'Open to all students',
+    note: 'Open to all students. If you are only coming for the Career Day, please arrive before 17:00.',
   },
   {
     title: 'Innovation Summit',
@@ -157,6 +157,14 @@ const schedule = [
     collaborator={collaborator}
   />
 
+  <ScheduleSection
+    plain
+    items={schedule}
+    disclaimer="Participation in MedTech Career Day is free, but a ticket is required for the Innovation Summit. The fee ensures attendance commitment."
+    eventDate={event.data.sortDate}
+    ticketUrl={ticketUrl}
+  />
+
   {researchGroups.length > 0 && (
     <ResearchGroupsSection
       eyebrow="MedTech Career Day 2026"
@@ -230,13 +238,6 @@ const schedule = [
       This event offers a space to learn, network, and collaborate with fellow students and professionals in MedTech.
     </p>
   </ContentSection>
-
-  <ScheduleSection
-    items={schedule}
-    disclaimer="Participation in MedTech Career Day is free, but a ticket is required for the Innovation Summit. The fee ensures attendance commitment."
-    eventDate={event.data.sortDate}
-    ticketUrl={ticketUrl}
-  />
 
   <section class="cmis-footer">
     <p>
